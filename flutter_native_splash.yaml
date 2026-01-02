@@ -1,0 +1,14 @@
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/img/online_shop_logo.png
+  branding: assets/img/online_shop_logo.png
+  
+  color_dark: "#0D1326"
+  image_dark: assets/img/online_shop_logo_dark.png
+  branding_dark: assets/img/online_shop_logo_dark.png
+
+  android_12:
+    image: assets/img/online_shop_logo.png
+    icon_background_color: "#FFFFFF"
+    image_dark: assets/img/online_shop_logo_dark.png
+    icon_background_color_dark: "#0D1326" 
