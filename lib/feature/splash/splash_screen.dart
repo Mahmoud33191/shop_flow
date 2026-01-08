@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shop_flow/core/utils/nav_bar.dart';
 import '../../core/theme/app_colors.dart';
-import '../home/home_view.dart';
 import 'bouncing_dots.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -54,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen>
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
             transitionDuration: const Duration(milliseconds: 800),
-            pageBuilder: (_, __, ___) => const HomeView(),
+            pageBuilder: (_, __, ___) =>  MainPage(),
             transitionsBuilder: (_, animation, __, child) {
               return FadeTransition(opacity: animation, child: child);
             },
