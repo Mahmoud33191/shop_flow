@@ -13,8 +13,8 @@ class HomeView extends StatelessWidget {
         actionsPadding: const EdgeInsets.symmetric(horizontal: 16.0),
         title: SvgPicture.asset(
           'assets/img/online_shop_logo.svg',
-          height: 100,
-          width: 100,
+          height: 85,
+          width: 85,
         ),
         leading: Padding(
           padding: const EdgeInsets.all(15),
@@ -35,24 +35,80 @@ class HomeView extends StatelessWidget {
           IconButton(onPressed: () {}, icon: const Icon(Icons.shopping_cart)),
         ],
       ),
-      // body: Center(
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: [
-      //       const Text(
-      //         'Welcome to MarketFlow',
-      //         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      //       ),
-      //       const SizedBox(height: 20),
-      //       ElevatedButton(
-      //         onPressed: () {
-      //           context.read<AppCubit>().toggleTheme();
-      //         },
-      //         child: const Text('Change Theme'),
-      //       ),
-      //     ],
-      //   ),
-      // ),
+
+      
+       body: GridView.builder(
+        padding: EdgeInsets.all(12),
+        itemCount: 12,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+          childAspectRatio: 0.8,
+        ),
+        itemBuilder: (context, index) {
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.grey, width: 1.5),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 4,
+                  spreadRadius: 1,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(12),
+                    ),
+                    child: Image.asset(
+                      'images/images.jpg',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
+                  ),
+                ),
+
+               Padding(
+                  padding:const  EdgeInsets.only(left: 18, bottom: 12),
+
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        "Product Name",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+
+                      Text(
+                        "\$20",
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.green,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }
