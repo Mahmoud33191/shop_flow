@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../core/cubit/app_cubit.dart';
+import '../search/search_view.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -31,13 +32,20 @@ class HomeView extends StatelessWidget {
         ),
 
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SearchView()),
+              );
+            },
+            icon: const Icon(Icons.search),
+          ),
           IconButton(onPressed: () {}, icon: const Icon(Icons.shopping_cart)),
         ],
       ),
 
-      
-       body: GridView.builder(
+      body: GridView.builder(
         padding: EdgeInsets.all(12),
         itemCount: 12,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -64,21 +72,20 @@ class HomeView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(12),
-                    ),
-                    child: Image.asset(
-                      'images/images.jpg',
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                    ),
-                  ),
-                ),
-
-               Padding(
-                  padding:const  EdgeInsets.only(left: 18, bottom: 12),
+                // Expanded(
+                //   child: ClipRRect(
+                //     borderRadius: const BorderRadius.vertical(
+                //       top: Radius.circular(12),
+                //     ),
+                //     child: Image.asset(
+                //       'images/images.jpg',
+                //       fit: BoxFit.cover,
+                //       width: double.infinity,
+                //     ),
+                //   ),
+                // ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 18, bottom: 12),
 
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
