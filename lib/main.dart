@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shop_flow/feature/home/home_view.dart';
 import 'core/theme/app_theme.dart';
+import 'feature/search/search_view.dart';
 import 'feature/splash/splash_screen.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: state.themeMode,
-            home: const SplashScreen(),
+            home: const HomeView(),
           );
         },
       ),
