@@ -49,12 +49,12 @@ class HomeView extends StatelessWidget {
         itemBuilder: (context, index) {
           return Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color:Colors.white ,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: Colors.grey, width: 1.5),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black,
                   blurRadius: 4,
                   spreadRadius: 1,
                   offset: const Offset(0, 3),
