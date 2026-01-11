@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_flow/feature/home/home_view.dart';
 
+import '../../feature/profile/profile_screen.dart';
 import '../theme/app_colors.dart';
 import 'nav_bar_cubit.dart';
 
@@ -10,7 +11,7 @@ class MainPage extends StatelessWidget {
 
   final List<Widget> pages = [
     HomeView(),
-    const Center(child: Text('Profile Page')),
+    ProfileScreen(),
   ];
 
   @override

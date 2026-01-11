@@ -10,11 +10,14 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actionsPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-        title: SvgPicture.asset(
-          'assets/img/online_shop_logo.svg',
-          height: 100,
-          width: 100,
+        actionsPadding: const EdgeInsets.only(top:  18.0,right: 15),
+        title: Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: SvgPicture.asset(
+            'assets/img/online_shop_logo.svg',
+            height: 85,
+            width: 85,
+          ),
         ),
         leading: Padding(
           padding: const EdgeInsets.all(15),
@@ -35,24 +38,7 @@ class HomeView extends StatelessWidget {
           IconButton(onPressed: () {}, icon: const Icon(Icons.shopping_cart)),
         ],
       ),
-      // body: Center(
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: [
-      //       const Text(
-      //         'Welcome to MarketFlow',
-      //         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      //       ),
-      //       const SizedBox(height: 20),
-      //       ElevatedButton(
-      //         onPressed: () {
-      //           context.read<AppCubit>().toggleTheme();
-      //         },
-      //         child: const Text('Change Theme'),
-      //       ),
-      //     ],
-      //   ),
-      // ),
+
     );
   }
 }
