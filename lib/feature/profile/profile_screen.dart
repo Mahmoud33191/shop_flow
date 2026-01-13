@@ -10,7 +10,6 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Container(
         color: context.watch<AppCubit>().state.themeMode == ThemeMode.dark
             ? AppColors.darkBackground
@@ -23,14 +22,16 @@ class ProfileScreen extends StatelessWidget {
                 child: Stack(
                   children: [
                     CircleAvatar(
-                      backgroundColor: context.watch<AppCubit>().state.themeMode == ThemeMode.dark
+                      backgroundColor:
+                          context.watch<AppCubit>().state.themeMode ==
+                              ThemeMode.dark
                           ? AppColors.lightBackground
                           : AppColors.darkBackground,
                       radius: 60,
                       child: const Icon(
                         Icons.person,
                         size: 60,
-                        color:Colors.grey
+                        color: Colors.grey,
                       ),
                     ),
                     const Positioned(
@@ -82,7 +83,9 @@ class ProfileScreen extends StatelessWidget {
                     ),
 
                     Card(
-                      color: context.watch<AppCubit>().state.themeMode == ThemeMode.dark
+                      color:
+                          context.watch<AppCubit>().state.themeMode ==
+                              ThemeMode.dark
                           ? AppColors.darkBackground
                           : AppColors.lightBackground,
                       elevation: 2,
@@ -129,10 +132,19 @@ class ProfileScreen extends StatelessWidget {
                                 Icons.dark_mode_rounded,
                                 color: Colors.blue,
                               ),
-                              trailing: Icon(
-                                Icons.toggle_off_outlined,
-                                size: 50,
-                                color: Colors.grey[300],
+                              trailing: IconButton(
+                                onPressed: () {
+                                  context.read<AppCubit>().toggleTheme();
+                                },
+                                icon: Icon(
+
+                                  context.watch<AppCubit>().state.themeMode ==
+                                          ThemeMode.dark
+                                      ? Icons.toggle_on_outlined
+                                      : Icons.toggle_off_outlined,
+                                  size: 50,
+                                  color: AppColors.primary,
+                                ),
                               ),
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 10,
@@ -165,7 +177,9 @@ class ProfileScreen extends StatelessWidget {
                     ),
 
                     Card(
-                      color: context.watch<AppCubit>().state.themeMode == ThemeMode.dark
+                      color:
+                          context.watch<AppCubit>().state.themeMode ==
+                              ThemeMode.dark
                           ? AppColors.darkBackground
                           : AppColors.lightBackground,
                       elevation: 2,
@@ -254,7 +268,7 @@ class ProfileScreen extends StatelessWidget {
                   onPressed: () {},
                   style: const ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll<Color>(
-                     AppColors.primary ,
+                      AppColors.primary,
                     ),
                   ),
                   child: const Row(
