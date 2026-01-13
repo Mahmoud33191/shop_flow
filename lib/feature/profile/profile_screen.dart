@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../core/cubit/app_cubit.dart';
+import '../../core/theme/app_colors.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -6,25 +10,11 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: const Padding(
-          padding: EdgeInsets.only(left: 16.0),
-          child: Icon(Icons.arrow_back, size: 30, color: Colors.black),
-        ),
-        centerTitle: true,
-        title: const Text(
-          "Profile",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
 
       body: Container(
-        color: Colors.white,
+        color: context.watch<AppCubit>().state.themeMode == ThemeMode.dark
+            ? AppColors.darkBackground
+            : AppColors.lightBackground,
         child: Center(
           child: ListView(
             children: [
@@ -33,12 +23,14 @@ class ProfileScreen extends StatelessWidget {
                 child: Stack(
                   children: [
                     CircleAvatar(
-                      backgroundColor: Colors.grey[200],
+                      backgroundColor: context.watch<AppCubit>().state.themeMode == ThemeMode.dark
+                          ? AppColors.lightBackground
+                          : AppColors.darkBackground,
                       radius: 60,
                       child: const Icon(
                         Icons.person,
                         size: 60,
-                        color: Colors.blueGrey,
+                        color:Colors.grey
                       ),
                     ),
                     const Positioned(
@@ -90,7 +82,9 @@ class ProfileScreen extends StatelessWidget {
                     ),
 
                     Card(
-                      color: Colors.white,
+                      color: context.watch<AppCubit>().state.themeMode == ThemeMode.dark
+                          ? AppColors.darkBackground
+                          : AppColors.lightBackground,
                       elevation: 2,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -171,7 +165,9 @@ class ProfileScreen extends StatelessWidget {
                     ),
 
                     Card(
-                      color: Colors.white,
+                      color: context.watch<AppCubit>().state.themeMode == ThemeMode.dark
+                          ? AppColors.darkBackground
+                          : AppColors.lightBackground,
                       elevation: 2,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -258,7 +254,7 @@ class ProfileScreen extends StatelessWidget {
                   onPressed: () {},
                   style: const ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll<Color>(
-                      Colors.white,
+                     AppColors.primary ,
                     ),
                   ),
                   child: const Row(
