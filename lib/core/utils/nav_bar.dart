@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_flow/feature/home/home_view.dart';
+import 'package:shop_flow/feature/home/presentation/home_view.dart';
 
+import '../../feature/profile/profile_screen.dart';
 import '../theme/app_colors.dart';
 import 'nav_bar_cubit.dart';
 
@@ -10,7 +11,10 @@ class MainPage extends StatelessWidget {
 
   final List<Widget> pages = [
     HomeView(),
-    const Center(child: Text('Profile Page')),
+    Center(child: Text('Search Page')),
+    Center(child: Text('Cart Page')),
+
+    ProfileScreen(),
   ];
 
   @override
@@ -30,20 +34,24 @@ class MainPage extends StatelessWidget {
               child: const Icon(Icons.add, color: Colors.white),
             ),
             floatingActionButtonLocation:
-            FloatingActionButtonLocation.centerDocked,
+                FloatingActionButtonLocation.centerDocked,
 
             body: IndexedStack(index: currentIndex, children: pages),
 
             // 2. Use BottomAppBar to enable the notch effect
             bottomNavigationBar: BottomAppBar(
-              shape: const CircularNotchedRectangle(), // Creates the notch
-              notchMargin: 8.0, // Space between FAB and the bar
+              shape: const CircularNotchedRectangle(),
+              // Creates the notch
+              notchMargin: 8.0,
+              // Space between FAB and the bar
               clipBehavior: Clip.antiAlias,
               padding: EdgeInsets.zero,
               height: 70,
               child: BottomNavigationBar(
-                backgroundColor: Colors.transparent, // Make transparent to show BottomAppBar
-                elevation: 0, // Remove shadow so it blends in
+                backgroundColor: Colors.transparent,
+                // Make transparent to show BottomAppBar
+                elevation: 0,
+                // Remove shadow so it blends in
                 type: BottomNavigationBarType.fixed,
                 currentIndex: currentIndex,
                 onTap: (index) {
@@ -53,8 +61,22 @@ class MainPage extends StatelessWidget {
                 unselectedItemColor: Colors.grey,
                 showUnselectedLabels: false,
                 items: const [
-                  BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-                  BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.search),
+                    label: 'Search',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.shopping_cart),
+                    label: 'Cart',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.person),
+                    label: 'Profile',
+                  ),
                 ],
               ),
             ),
