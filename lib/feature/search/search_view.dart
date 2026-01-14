@@ -73,7 +73,6 @@ class _SearchViewState extends State<SearchView> {
               itemBuilder: (context, index) {
                 final product = filteredProducts[index];
 
-                /// 👇 نفس كارت صفحة المنتجات بالظبط
                 return Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
