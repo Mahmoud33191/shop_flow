@@ -15,7 +15,7 @@ class _SearchViewState extends State<SearchView> {
     (index) => {
       "name": "Product ${index + 1}",
       "price": 20 + index,
-      "image": null,
+      "image": 'assets/img/download.png',
     },
   );
 
@@ -28,14 +28,14 @@ class _SearchViewState extends State<SearchView> {
   }
 
   void searchProduct(String query) {
-    final result = allProducts.where((product) {
-      return product["name"].toString().toLowerCase().contains(
-        query.toLowerCase(),
-      );
-    }).toList();
-
     setState(() {
-      filteredProducts = result;
+      filteredProducts = allProducts
+          .where(
+            (product) => product["name"].toString().toLowerCase().contains(
+              query.toLowerCase(),
+            ),
+          )
+          .toList();
     });
   }
 
@@ -45,7 +45,6 @@ class _SearchViewState extends State<SearchView> {
       appBar: AppBar(title: const Text("Search")),
       body: Column(
         children: [
-          // Search Input
           Padding(
             padding: const EdgeInsets.all(12),
             child: TextField(
@@ -73,6 +72,8 @@ class _SearchViewState extends State<SearchView> {
               ),
               itemBuilder: (context, index) {
                 final product = filteredProducts[index];
+
+                /// 👇 نفس كارت صفحة المنتجات بالظبط
                 return Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -95,20 +96,15 @@ class _SearchViewState extends State<SearchView> {
                           borderRadius: const BorderRadius.vertical(
                             top: Radius.circular(12),
                           ),
-                          child: Container(
-                            color: Colors.grey[300],
-                            child: const Center(
-                              child: Icon(
-                                Icons.image,
-                                size: 50,
-                                color: Colors.white,
-                              ),
-                            ),
+                          child: Image.asset(
+                            product["image"],
+                            fit: BoxFit.cover,
+                            width: double.infinity,
                           ),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 12, bottom: 12),
+                        padding: const EdgeInsets.only(left: 18, bottom: 12),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

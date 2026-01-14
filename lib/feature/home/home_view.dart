@@ -72,18 +72,18 @@ class HomeView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Expanded(
-                //   child: ClipRRect(
-                //     borderRadius: const BorderRadius.vertical(
-                //       top: Radius.circular(12),
-                //     ),
-                //     child: Image.asset(
-                //       'images/images.jpg',
-                //       fit: BoxFit.cover,
-                //       width: double.infinity,
-                //     ),
-                //   ),
-                // ),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(12),
+                    ),
+                    child: Image.asset(
+                      'assets/img/download.png',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 18, bottom: 12),
 
