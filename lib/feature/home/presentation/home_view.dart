@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../core/cubit/app_cubit.dart';
-import '../search/search_view.dart';
+import '../../../core/cubit/app_cubit.dart';
+import '../../../core/theme/app_colors.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -14,12 +14,13 @@ class HomeView extends StatelessWidget {
         actionsPadding: const EdgeInsets.symmetric(horizontal: 16.0),
         title: SvgPicture.asset(
           'assets/img/online_shop_logo.svg',
-          height: 85,
-          width: 85,
+          height: 100,
+          width: 100,
         ),
-        leading: Padding(
-          padding: const EdgeInsets.all(15),
-          child: IconButton(
+
+        actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.shopping_cart)),
+          IconButton(
             onPressed: () {
               context.read<AppCubit>().toggleTheme();
             },
@@ -29,19 +30,6 @@ class HomeView extends StatelessWidget {
                   : Icons.dark_mode,
             ),
           ),
-        ),
-
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SearchView()),
-              );
-            },
-            icon: const Icon(Icons.search),
-          ),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.shopping_cart)),
         ],
       ),
 
@@ -57,7 +45,9 @@ class HomeView extends StatelessWidget {
         itemBuilder: (context, index) {
           return Container(
             decoration: BoxDecoration(
-              color:Colors.white ,
+              color: context.watch<AppCubit>().state.themeMode == ThemeMode.dark
+                  ? AppColors.darkBackground
+                  : AppColors.lightBackground,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: Colors.grey, width: 1.5),
               boxShadow: [
@@ -78,12 +68,13 @@ class HomeView extends StatelessWidget {
                       top: Radius.circular(12),
                     ),
                     child: Image.asset(
-                      'assets/img/download.png',
+                      'images/images.jpg',
                       fit: BoxFit.cover,
                       width: double.infinity,
                     ),
                   ),
                 ),
+
                 Padding(
                   padding: const EdgeInsets.only(left: 18, bottom: 12),
 

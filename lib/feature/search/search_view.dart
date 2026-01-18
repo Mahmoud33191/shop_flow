@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../core/cubit/app_cubit.dart';
+import '../../core/theme/app_colors.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({super.key});
@@ -42,19 +46,20 @@ class _SearchViewState extends State<SearchView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Search")),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: TextField(
-              controller: searchController,
-              onChanged: searchProduct,
-              decoration: InputDecoration(
-                hintText: "Search product...",
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+          SafeArea(
+            child: SizedBox(
+              height: 70,
+              child: TextField(
+                controller: searchController,
+                onChanged: searchProduct,
+                decoration: InputDecoration(
+                  hintText: "Search product...",
+                  prefixIcon: const Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
             ),
@@ -75,12 +80,16 @@ class _SearchViewState extends State<SearchView> {
 
                 return Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color:
+                        context.watch<AppCubit>().state.themeMode ==
+                            ThemeMode.dark
+                        ? AppColors.darkBackground
+                        : AppColors.lightBackground,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: Colors.grey, width: 1.5),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black,
                         blurRadius: 4,
                         spreadRadius: 1,
                         offset: const Offset(0, 3),
