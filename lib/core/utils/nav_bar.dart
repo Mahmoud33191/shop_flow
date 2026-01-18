@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_flow/feature/addProduct/manage_store.dart';
 import 'package:shop_flow/feature/home/presentation/home_view.dart';
 
 import '../../feature/profile/profile_screen.dart';
@@ -27,6 +28,7 @@ class MainPage extends StatelessWidget {
             // 1. Use the actual FloatingActionButton widget for the circular shape
             floatingActionButton: FloatingActionButton(
               onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ManageStore()));
                 // Add your action here
               },
               backgroundColor: AppColors.primary,
