@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shop_flow/core/utils/nav_bar.dart';
 import '../../core/theme/app_colors.dart';
 import 'bouncing_dots.dart';
+import 'package:shop_flow/l10n/app_localizations.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -54,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen>
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
             transitionDuration: const Duration(milliseconds: 800),
-            pageBuilder: (_, __, ___) =>  MainPage(),
+            pageBuilder: (_, __, ___) => MainPage(),
             transitionsBuilder: (_, animation, __, child) {
               return FadeTransition(opacity: animation, child: child);
             },
@@ -115,7 +116,7 @@ class _SplashScreenState extends State<SplashScreen>
                     child: Column(
                       children: [
                         Text(
-                          "MarketFlow",
+                          AppLocalizations.of(context)!.appTitle,
                           style: Theme.of(context).textTheme.headlineLarge
                               ?.copyWith(
                                 fontWeight: FontWeight.bold,
@@ -128,7 +129,7 @@ class _SplashScreenState extends State<SplashScreen>
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          "The Future of Commerce",
+                          AppLocalizations.of(context)!.slogan,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
                                 color: isDarkMode

@@ -1,89 +1,68 @@
-// validators.dart
-
-import '../helper/string_manager.dart';
-
-class Validator {
-  static String? validateEmail(String email) {
-    final regex = RegExp(r'^[a-zA-Z0-9._%+-]{6,}@gmail\.com$');
-
-    if (email.isEmpty) {
-      return AppStrings.emailRequired;
-    } else if (!email.split("@")[0].contains(RegExp(r'^.{6,}$'))) {
-      return AppStrings.emailMinLength;
-    } else if (!regex.hasMatch(email)) {
-      if (!email.contains("@gmail.com")) {
-        return AppStrings.emailMustEndGmail;
-      } else {
-        return AppStrings.emailInvalidFormat;
-      }
+/// Validators class with static validation methods
+class Validators {
+  /// Validate email
+  static String? validateEmail(String? email) {
+    if (email == null || email.isEmpty) {
+      return 'Email is required';
+    }
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (!emailRegex.hasMatch(email)) {
+      return 'Please enter a valid email';
     }
     return null;
   }
 
-  static String? validatePassword(String password) {
-    if (password.isEmpty) {
-      return AppStrings.fieldRequired;
+  /// Validate password
+  static String? validatePassword(String? password) {
+    if (password == null || password.isEmpty) {
+      return 'Password is required';
     }
-    if (password.length < 8) {
-      return AppStrings.passwordAtLeast8Char;
-    }
-    if (!RegExp(r'[A-Z]').hasMatch(password)) {
-      return AppStrings.passwordAtLeast1Uppercase;
-    }
-    if (!RegExp(r'[a-z]').hasMatch(password)) {
-      return AppStrings.passwordAtLeast1Lowercase;
-    }
-    if (!RegExp(r'\d').hasMatch(password)) {
-      return AppStrings.passwordAtLeast1Number;
-    }
-    if (!RegExp(r'[@$!%*?&]').hasMatch(password)) {
-      return AppStrings.passwordAtLeast1SpecialChar;
-    }
-    // if (passwordController.text != confirmPassController.text) {
-    //   return AppStrings.passwordNotTheSame;
-    // }
-    return null;
-  }
-
-  static String? validateID(String id) {
-    final regex = RegExp(r'^\d{14}$');
-
-    if (id.isEmpty) {
-      return AppStrings.idRequired;
-    } else if (!regex.hasMatch(id)) {
-      return AppStrings.idInvalid;
+    if (password.length < 6) {
+      return 'Password must be at least 6 characters';
     }
     return null;
   }
 
-  static String? validatePhoneNumber(String phoneNumber) {
-    if (phoneNumber.isEmpty) {
-      return AppStrings.phoneRequired;
+  /// Validate confirm password
+  static String? validateConfirmPassword(
+    String? confirmPassword,
+    String password,
+  ) {
+    if (confirmPassword == null || confirmPassword.isEmpty) {
+      return 'Please confirm your password';
     }
-    if (!RegExp(r'^01[0125]').hasMatch(phoneNumber)) {
-      return AppStrings.phoneInvalidStart;
-    }
-    if (phoneNumber.length != 11) {
-      return AppStrings.phoneInvalidLength;
-    }
-    if (!RegExp(r'^\d{11}$').hasMatch(phoneNumber)) {
-      return AppStrings.phoneInvalidFormat;
+    if (confirmPassword != password) {
+      return 'Passwords do not match';
     }
     return null;
   }
 
-  static String? validateUserName(String userName) {
-    final regex = RegExp(r'^[a-zA-Z][a-zA-Z0-9_ ]{2,}$');
-    if (userName.isEmpty) {
-      return AppStrings.usernameRequired;
-    } else if (!RegExp(r'^[a-zA-Z]').hasMatch(userName)) {
-      return AppStrings.usernameMustStartWithLetter;
-    } else if (userName.length < 3) {
-      return AppStrings.usernameMinLength;
-    } else if (!regex.hasMatch(userName)) {
-      return AppStrings.usernameInvalidFormat;
-    } else if (userName.replaceAll(RegExp(r'[^a-zA-Z]'), '').length < 3) {
-      return AppStrings.usernameMustContainAtLeast3Letters;
+  /// Validate required field
+  static String? validateRequired(String? value, String fieldName) {
+    if (value == null || value.trim().isEmpty) {
+      return '$fieldName is required';
+    }
+    return null;
+  }
+
+  /// Validate phone number
+  static String? validatePhone(String? phone) {
+    if (phone == null || phone.isEmpty) {
+      return 'Phone number is required';
+    }
+    if (phone.length < 10) {
+      return 'Please enter a valid phone number';
+    }
+    return null;
+  }
+
+  /// Validate name
+  static String? validateName(String? name) {
+    if (name == null || name.trim().isEmpty) {
+      return 'Name is required';
+    }
+    if (name.length < 2) {
+      return 'Name must be at least 2 characters';
     }
     return null;
   }

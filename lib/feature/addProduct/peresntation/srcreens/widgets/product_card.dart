@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shop_flow/feature/addProduct/peresntation/srcreens/widgets/manage_buttons.dart';
 import 'package:shop_flow/feature/addProduct/peresntation/srcreens/widgets/stocks_widget.dart';
 
-
 class ProductCard extends StatelessWidget {
   const ProductCard({
     super.key,
@@ -11,13 +10,14 @@ class ProductCard extends StatelessWidget {
     required this.productImage,
     required this.productPrice,
     required this.stockCount,
+    this.onDelete,
   });
 
   final String productName, productSKU, productImage;
 
   final double productPrice;
-
   final int stockCount;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +91,14 @@ class ProductCard extends StatelessWidget {
               ],
             ),
           ),
-          Positioned(right: 9, top: 9, child: Icon(Icons.delete)),
+          Positioned(
+            right: 0,
+            top: 0,
+            child: IconButton(
+              icon: Icon(Icons.delete, color: Colors.red),
+              onPressed: onDelete,
+            ),
+          ),
         ],
       ),
     );

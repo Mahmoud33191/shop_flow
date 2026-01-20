@@ -1,7 +1,7 @@
 flutter_launcher_icons:
-  image_path: "assets/img/online_shop_logo.png"
-  android: true 
+  android: "launcher_icon"
   ios: true
+  image_path: "assets/img/online_shop_logo.svg"
   min_sdk_android: 21
-  adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/img/online_shop_logo.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/img/online_shop_logo.svg"

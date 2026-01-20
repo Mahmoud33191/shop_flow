@@ -2,37 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_flow/feature/addProduct/manage_store.dart';
 import 'package:shop_flow/feature/home/presentation/home_view.dart';
+import 'package:shop_flow/feature/cart/presentation/screens/cart_screen.dart';
+import 'package:shop_flow/feature/cart/presentation/cubit/cart_cubit.dart';
 
 import '../../feature/profile/profile_screen.dart';
 import '../theme/app_colors.dart';
 import 'nav_bar_cubit.dart';
+import 'package:shop_flow/l10n/app_localizations.dart';
 
 class MainPage extends StatelessWidget {
   MainPage({super.key});
 
   final List<Widget> pages = [
-    HomeView(),
-    Center(child: Text('Search Page')),
-    Center(child: Text('Cart Page')),
-
-    ProfileScreen(),
+    const HomeView(),
+    const Center(child: Text('Search Page')),
+    const CartScreen(),
+    const ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NavigationCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => NavigationCubit()),
+        BlocProvider(create: (context) => CartCubit()),
+      ],
       child: BlocBuilder<NavigationCubit, int>(
         builder: (context, currentIndex) {
           return Scaffold(
             // 1. Use the actual FloatingActionButton widget for the circular shape
             floatingActionButton: FloatingActionButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ManageStore()));
-                // Add your action here
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ManageStore()),
+                );
               },
               backgroundColor: AppColors.primary,
-              shape: const CircleBorder(), // Ensures it is perfectly round
+              shape: const CircleBorder(),
               child: const Icon(Icons.add, color: Colors.white),
             ),
             floatingActionButtonLocation:
@@ -43,17 +50,13 @@ class MainPage extends StatelessWidget {
             // 2. Use BottomAppBar to enable the notch effect
             bottomNavigationBar: BottomAppBar(
               shape: const CircularNotchedRectangle(),
-              // Creates the notch
               notchMargin: 8.0,
-              // Space between FAB and the bar
               clipBehavior: Clip.antiAlias,
               padding: EdgeInsets.zero,
               height: 70,
               child: BottomNavigationBar(
                 backgroundColor: Colors.transparent,
-                // Make transparent to show BottomAppBar
                 elevation: 0,
-                // Remove shadow so it blends in
                 type: BottomNavigationBarType.fixed,
                 currentIndex: currentIndex,
                 onTap: (index) {
@@ -62,22 +65,31 @@ class MainPage extends StatelessWidget {
                 selectedItemColor: AppColors.primary,
                 unselectedItemColor: Colors.grey,
                 showUnselectedLabels: false,
-                items: const [
+                items: [
                   BottomNavigationBarItem(
                     icon: Icon(Icons.home),
-                    label: 'Home',
+                    label: AppLocalizations.of(context)!.home,
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.search),
-                    label: 'Search',
+                    label: AppLocalizations.of(context)!.search,
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.shopping_cart),
-                    label: 'Cart',
+                    icon: BlocBuilder<CartCubit, CartState>(
+                      builder: (context, state) {
+                        final count = context.read<CartCubit>().itemCount;
+                        return Badge(
+                          isLabelVisible: count > 0,
+                          label: Text('$count'),
+                          child: const Icon(Icons.shopping_cart),
+                        );
+                      },
+                    ),
+                    label: AppLocalizations.of(context)!.cart,
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.person),
-                    label: 'Profile',
+                    label: AppLocalizations.of(context)!.profile,
                   ),
                 ],
               ),
