@@ -53,4 +53,8 @@ class ApiKeys {
   static const String lastName = "lastName";
   static const String productId = "productId";
   static const String quantity = "quantity";
+  static const String rating = "rating";
+  static const String comment = "comment";
+  static const String message = "message";
+  static const String errors = "errors";
 }

@@ -13,10 +13,7 @@ class ApiService {
       baseUrl: EndPoints.baseUrl,
       // Receive data even if the status code indicates an error.
       receiveDataWhenStatusError: true,
-      // You can add default headers here if needed, e.g., for content-type.
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      // 1. REMOVED: The global header is no longer here.
       // Set connection and receive timeouts.
       connectTimeout: const Duration(seconds: 10), // 10 seconds
       receiveTimeout: const Duration(seconds: 10), // 10 seconds
@@ -59,6 +56,7 @@ class ApiService {
 
   /// Makes a POST request to the given [endpoint] with the given [data].
   ///
+  // 2. MODIFIED: The header is now applied specifically for POST requests.
   /// [data] is the request body.
   /// [options] can be used to configure headers, timeouts, etc. for this specific request.
   Future<Response> post(
@@ -66,10 +64,18 @@ class ApiService {
         Map<String, dynamic>? data,
         Options? options,
       }) async {
+    // If the caller provides custom options, merge them. Otherwise, create new options.
+    final effectiveOptions = (options ?? Options()).copyWith(
+      headers: {
+        'Content-Type': 'application/json',
+        ...?options?.headers, // Preserve other headers if they exist
+      },
+    );
+
     return await _dio.post(
       endpoint,
       data: data,
-      options: options,
+      options: effectiveOptions,
     );
   }
 
@@ -79,10 +85,18 @@ class ApiService {
         required Map<String, dynamic> data,
         Options? options,
       }) async {
+    // It's good practice to also apply this to PUT requests.
+    final effectiveOptions = (options ?? Options()).copyWith(
+      headers: {
+        'Content-Type': 'application/json',
+        ...?options?.headers,
+      },
+    );
+
     return await _dio.put(
       endpoint,
       data: data,
-      options: options,
+      options: effectiveOptions,
     );
   }
 

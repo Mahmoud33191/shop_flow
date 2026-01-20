@@ -130,12 +130,12 @@ class CartScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             child: item.productCoverUrl.isNotEmpty
                 ? CachedNetworkImage(
-                    imageUrl: item.productCoverUrl,
-                    width: 80,
-                    height: 80,
-                    fit: BoxFit.cover,
-                    errorWidget: (_, __, ___) => _buildPlaceholder(),
-                  )
+              imageUrl: item.productCoverUrl,
+              width: 80,
+              height: 80,
+              fit: BoxFit.cover,
+              errorWidget: (_, __, ___) => _buildPlaceholder(),
+            )
                 : _buildPlaceholder(),
           ),
           const SizedBox(width: 16),
@@ -168,7 +168,7 @@ class CartScreen extends StatelessWidget {
                     _buildQuantityButton(
                       context,
                       Icons.remove,
-                      () => context.read<CartCubit>().updateQuantity(
+                          () => context.read<CartCubit>().updateQuantity(
                         item.id,
                         item.quantity - 1,
                       ),
@@ -186,7 +186,7 @@ class CartScreen extends StatelessWidget {
                     _buildQuantityButton(
                       context,
                       Icons.add,
-                      () => context.read<CartCubit>().updateQuantity(
+                          () => context.read<CartCubit>().updateQuantity(
                         item.id,
                         item.quantity + 1,
                       ),
@@ -218,10 +218,10 @@ class CartScreen extends StatelessWidget {
   }
 
   Widget _buildQuantityButton(
-    BuildContext context,
-    IconData icon,
-    VoidCallback onPressed,
-  ) {
+      BuildContext context,
+      IconData icon,
+      VoidCallback onPressed,
+      ) {
     return GestureDetector(
       onTap: onPressed,
       child: Container(

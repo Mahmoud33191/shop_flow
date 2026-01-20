@@ -11,7 +11,8 @@ import 'package:shop_flow/feature/home/data/models/review_model.dart';
 /// Abstract class defining the contract for product and category data operations.
 abstract class IProductDataSource {
   Future<List<CategoryModel>> fetchCategories();
-  Future<List<ProductModel>> fetchProducts({int? categoryId});
+  // 🔐 MODIFICATION: Added searchQuery parameter
+  Future<List<ProductModel>> fetchProducts({int? categoryId, String? searchQuery});
   Future<List<OfferModel>> fetchOffers();
   Future<ProductModel?> fetchProductById(String productId);
   Future<List<ReviewModel>> fetchProductReviews(String productId);
@@ -29,21 +30,17 @@ class ProductDataSource implements IProductDataSource {
 
   ProductDataSource(this._apiService);
 
-  /// Helper to extract error message from API response
+  // ... _extractErrorMessage method remains the same ...
   String _extractErrorMessage(DioException e, String defaultMessage) {
     final data = e.response?.data;
-
     if (e.type == DioExceptionType.connectionTimeout ||
         e.type == DioExceptionType.receiveTimeout) {
       return 'Connection timeout. Please check your internet.';
     }
-
     if (e.type == DioExceptionType.connectionError) {
       return 'No internet connection.';
     }
-
     if (data == null) return defaultMessage;
-
     if (data is Map) {
       if (data['errors'] != null) {
         final errors = data['errors'];
@@ -65,22 +62,19 @@ class ProductDataSource implements IProductDataSource {
       if (data['title'] != null) return data['title'].toString();
       if (data['error'] != null) return data['error'].toString();
     }
-
     return defaultMessage;
   }
 
+  // ... fetchCategories method remains the same ...
   @override
   Future<List<CategoryModel>> fetchCategories() async {
     try {
-      // Categories endpoint requires authentication
       final token = CacheService.instance.accessToken;
       final Response response = await _apiService.get(
         EndPoints.categories,
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
-
       if (response.statusCode == 200) {
-        // Handle both array and object response
         if (response.data is List) {
           final List<dynamic> data = response.data;
           return data.map((json) => CategoryModel.fromJson(json)).toList();
@@ -92,43 +86,48 @@ class ProductDataSource implements IProductDataSource {
       return [];
     } on DioException catch (e) {
       debugPrint('Categories fetch failed: ${e.message}');
-      return []; // Return empty list instead of throwing
+      return [];
     } catch (e) {
       debugPrint('Categories error: $e');
       return [];
     }
   }
 
+
   @override
-  Future<List<ProductModel>> fetchProducts({int? categoryId}) async {
+  // 🔐 MODIFICATION: Added searchQuery parameter to the implementation
+  Future<List<ProductModel>> fetchProducts({int? categoryId, String? searchQuery}) async {
     try {
-      final Map<String, dynamic>? queryParameters = categoryId != null
-          ? {'categoryId': categoryId}
-          : null;
+      // Build query parameters dynamically
+      final queryParameters = <String, dynamic>{};
+      if (categoryId != null) {
+        queryParameters['categoryId'] = categoryId;
+      }
+      if (searchQuery != null && searchQuery.isNotEmpty) {
+        // Assuming your API uses 'name' or 'q' for text search. Adjust if needed.
+        queryParameters['name'] = searchQuery;
+      }
 
       final token = CacheService.instance.accessToken;
       final Response response = await _apiService.get(
         EndPoints.products,
-        queryParameters: queryParameters,
+        queryParameters: queryParameters.isNotEmpty ? queryParameters : null,
         options: token != null
             ? Options(headers: {'Authorization': 'Bearer $token'})
             : null,
       );
 
       if (response.statusCode == 200) {
-        // API returns { items: [...], page, totalCount } format
         if (response.data is Map && response.data['items'] != null) {
           final List<dynamic> data = response.data['items'];
           return data.map((json) => ProductModel.fromJson(json)).toList();
         } else if (response.data is List) {
-          // Fallback for direct array response
           final List<dynamic> data = response.data;
           return data.map((json) => ProductModel.fromJson(json)).toList();
         }
       }
       throw Exception('Failed to load products');
     } on DioException catch (e) {
-      // Check for parsing error (empty body on 200 OK)
       if (e.type == DioExceptionType.unknown && e.error is FormatException) {
         return [];
       }
@@ -141,6 +140,7 @@ class ProductDataSource implements IProductDataSource {
     }
   }
 
+  // ... all other methods (fetchOffers, fetchProductById, etc.) remain unchanged ...
   @override
   Future<List<OfferModel>> fetchOffers() async {
     try {
@@ -231,7 +231,6 @@ class ProductDataSource implements IProductDataSource {
     }
   }
 
-  /// Add product to cart
   Future<void> addToCart({
     required String productId,
     required int quantity,
@@ -248,7 +247,6 @@ class ProductDataSource implements IProductDataSource {
     }
   }
 
-  /// Delete a product
   Future<void> deleteProduct(String productId) async {
     try {
       final token = CacheService.instance.accessToken;
@@ -261,7 +259,6 @@ class ProductDataSource implements IProductDataSource {
     }
   }
 
-  /// Create a product
   @override
   Future<void> addProduct(Map<String, dynamic> productData) async {
     try {
@@ -276,7 +273,6 @@ class ProductDataSource implements IProductDataSource {
     }
   }
 
-  /// Add a review
   @override
   Future<void> addReview({
     required String productId,

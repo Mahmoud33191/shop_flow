@@ -153,6 +153,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         context.read<CartCubit>().addToCart(
           productId: widget.product.id,
           quantity: _quantity,
+          productName: widget.product.name,
+          price: widget.product.price,
+          imageUrl: widget.product.pictureUrl,
         );
       } catch (e) {
         // CartCubit might not be available, try API directly

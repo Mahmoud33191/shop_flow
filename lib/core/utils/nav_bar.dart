@@ -6,6 +6,7 @@ import 'package:shop_flow/feature/cart/presentation/screens/cart_screen.dart';
 import 'package:shop_flow/feature/cart/presentation/cubit/cart_cubit.dart';
 
 import '../../feature/profile/profile_screen.dart';
+import '../../feature/search/presentation/search_view.dart';
 import '../theme/app_colors.dart';
 import 'nav_bar_cubit.dart';
 import 'package:shop_flow/l10n/app_localizations.dart';
@@ -15,7 +16,7 @@ class MainPage extends StatelessWidget {
 
   final List<Widget> pages = [
     const HomeView(),
-    const Center(child: Text('Search Page')),
+    SearchView(),
     const CartScreen(),
     const ProfileScreen(),
   ];

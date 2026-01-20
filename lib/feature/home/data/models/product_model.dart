@@ -14,6 +14,8 @@ class ProductModel {
   final double discountPercentage;
   final List<String> categories;
 
+
+
   ProductModel({
     required this.id,
     this.productCode,

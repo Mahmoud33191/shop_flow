@@ -5,7 +5,6 @@ import 'package:shop_flow/feature/addProduct/peresntation/srcreens/widgets/produ
 import 'package:shop_flow/feature/addProduct/peresntation/srcreens/widgets/search_widget.dart';
 import 'package:shop_flow/feature/home/data/dataSource/product_data_source.dart';
 import 'package:shop_flow/feature/home/data/models/product_model.dart';
-import 'package:shop_flow/feature/profile/profile_screen.dart';
 // import 'package:shop_flow/feature/addProduct/peresntation/srcreens/widgets/taps_widget.dart';
 // import 'package:shop_flow/feature/addProduct/peresntation/srcreens/widgets/bottum_navigate.dart';
 
@@ -100,19 +99,6 @@ class _ManageStoreState extends State<ManageStore> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ProfileScreen(),
-                ),
-              );
-            },
-          ),
-        ],
         title: const Text(
           'Manage Store',
           style: TextStyle(fontWeight: FontWeight.bold),

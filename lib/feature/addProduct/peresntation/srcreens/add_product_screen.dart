@@ -20,6 +20,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final _priceController = TextEditingController();
   final _stockController = TextEditingController();
   final _imageController = TextEditingController();
+  final _arabicNameController = TextEditingController();
+  final _arabicDescController = TextEditingController();
+
 
   String? _selectedCategory;
   List<CategoryModel> _categories = [];
@@ -69,7 +72,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
       try {
         final productData = {
           'name': _nameController.text,
+          'arabicName': _arabicNameController.text,
+
           'description': _descController.text,
+          'arabicDescription': _arabicDescController.text,
+
           'price': double.tryParse(_priceController.text) ?? 0.0,
           'stock': int.tryParse(_stockController.text) ?? 0,
           'coverPictureUrl': _imageController.text,
@@ -124,7 +131,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 controller: _nameController,
                 hintText: 'Product Name',
                 validator: (value) =>
-                    value?.isEmpty ?? true ? 'Please enter name' : null,
+                value?.isEmpty ?? true ? 'Please enter name' : null,
+              ),
+              const SizedBox(height: 16),
+              CustomTextField(
+                controller: _arabicNameController,
+                hintText: 'Arabic Name',
+                validator: (value) =>
+                value?.isEmpty ?? true ? 'Please enter name' : null,
               ),
               const SizedBox(height: 16),
               CustomTextField(
@@ -132,8 +146,17 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 hintText: 'Description',
                 maxLines: 3,
                 validator: (value) =>
-                    value?.isEmpty ?? true ? 'Please enter description' : null,
+                value?.isEmpty ?? true ? 'Please enter description' : null,
               ),
+              const SizedBox(height: 16),
+              CustomTextField(
+                controller: _arabicDescController,
+                hintText: 'Arabic Description',
+                maxLines: 3,
+                validator: (value) =>
+                value?.isEmpty ?? true ? 'Please enter description' : null,
+              ),
+
               const SizedBox(height: 16),
               Row(
                 children: [
@@ -143,7 +166,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       hintText: 'Price',
                       keyboardType: TextInputType.number,
                       validator: (value) =>
-                          value?.isEmpty ?? true ? 'Required' : null,
+                      value?.isEmpty ?? true ? 'Required' : null,
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -153,7 +176,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       hintText: 'Stock',
                       keyboardType: TextInputType.number,
                       validator: (value) =>
-                          value?.isEmpty ?? true ? 'Required' : null,
+                      value?.isEmpty ?? true ? 'Required' : null,
                     ),
                   ),
                 ],
@@ -163,9 +186,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 controller: _imageController,
                 hintText: 'Image URL',
                 validator: (value) =>
-                    value?.isEmpty ?? true ? 'Please enter image URL' : null,
+                value?.isEmpty ?? true ? 'Please enter image URL' : null,
               ),
               const SizedBox(height: 16),
+              const Text('Select Category:'),
+              const SizedBox(height: 8),
+              // Dropdown for categories
+
               if (_categories.isNotEmpty)
                 Container(
                   padding: const EdgeInsets.symmetric(

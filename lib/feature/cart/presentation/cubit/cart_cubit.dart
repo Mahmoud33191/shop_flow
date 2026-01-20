@@ -1,7 +1,8 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_flow/feature/cart/data/models/cart_model.dart';
+// ... (imports and state classes remain the same) ...
 
-// States
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../data/models/cart_model.dart';
 abstract class CartState {}
 
 class CartInitial extends CartState {}
@@ -23,7 +24,6 @@ class CartItemAdded extends CartState {
   CartItemAdded([this.message = 'Added to cart']);
 }
 
-// Cubit
 class CartCubit extends Cubit<CartState> {
   CartCubit() : super(CartInitial());
 
@@ -31,59 +31,66 @@ class CartCubit extends Cubit<CartState> {
   final List<CartItemModel> _localItems = [];
 
   List<CartItemModel> get items => _localItems;
-
-  double get subtotal =>
-      _localItems.fold(0, (sum, item) => sum + item.totalPrice);
-
+  double get subtotal => _localItems.fold(0, (sum, item) => sum + item.totalPrice);
   int get itemCount => _localItems.fold(0, (sum, item) => sum + item.quantity);
+
+  /// 🔐 ADD THIS METHOD
+  /// Emits the current state of the locally stored cart.
+  Future<void> loadCart() async {
+    emit(CartLoading());
+    try {
+      // In a local-only setup, we just emit the current items.
+      _emitCartLoaded();
+    } catch (e) {
+      emit(CartError("Failed to load cart data: ${e.toString()}"));
+    }
+  }
 
   /// Add item to cart
   Future<void> addToCart({
     required String productId,
     required int quantity,
+    required String productName, // Add these to create a more realistic item
+    required double price,
+    String? imageUrl,
   }) async {
-    emit(CartLoading());
+    // No need for CartLoading() here, it feels snappier without it for local operations
     try {
-      // Check if item already exists
-      final existingIndex = _localItems.indexWhere(
-        (item) => item.productId == productId,
-      );
+      final existingIndex = _localItems.indexWhere((item) => item.productId == productId);
 
       if (existingIndex >= 0) {
-        // Update quantity
         final existing = _localItems[existingIndex];
         _localItems[existingIndex] = existing.copyWith(
           quantity: existing.quantity + quantity,
-          totalPrice:
-              (existing.quantity + quantity) * existing.finalPricePerUnit,
         );
       } else {
-        // Add new item (mock data)
+        // Add new item with real data
         _localItems.add(
           CartItemModel(
             id: DateTime.now().millisecondsSinceEpoch.toString(),
             productId: productId,
-            productName: 'Product $productId',
-            productCoverUrl: '',
-            productStock: 100,
+            productName: productName,
+            productCoverUrl: imageUrl ?? '',
+            productStock: 100, // Mocked stock
             quantity: quantity,
-            basePricePerUnit: 0,
-            finalPricePerUnit: 0,
-            totalPrice: 0,
+            basePricePerUnit: price,
+            finalPricePerUnit: price, // Assuming no discounts for now
+            totalPrice: price * quantity,
           ),
         );
       }
 
-      emit(CartItemAdded());
-      _emitCartLoaded();
+      emit(CartItemAdded()); // Notify that an item was added
+      _emitCartLoaded(); // Then emit the new state of the entire cart
     } catch (e) {
       emit(CartError(e.toString()));
     }
   }
 
+  // ... (removeFromCart, updateQuantity, clearCart, _emitCartLoaded methods are correct and remain the same) ...
+
   /// Remove item from cart
   Future<void> removeFromCart(String itemId) async {
-    emit(CartLoading());
     try {
       _localItems.removeWhere((item) => item.id == itemId);
       _emitCartLoaded();
@@ -93,20 +100,18 @@ class CartCubit extends Cubit<CartState> {
   }
 
   /// Update item quantity
-  Future<void> updateQuantity(String itemId, int quantity) async {
-    if (quantity <= 0) {
+  Future<void> updateQuantity(String itemId, int newQuantity) async {
+    if (newQuantity <= 0) {
       await removeFromCart(itemId);
       return;
     }
-
-    emit(CartLoading());
     try {
       final index = _localItems.indexWhere((item) => item.id == itemId);
       if (index >= 0) {
         final item = _localItems[index];
         _localItems[index] = item.copyWith(
-          quantity: quantity,
-          totalPrice: quantity * item.finalPricePerUnit,
+          quantity: newQuantity,
+          totalPrice: newQuantity * item.finalPricePerUnit,
         );
       }
       _emitCartLoaded();
@@ -117,7 +122,6 @@ class CartCubit extends Cubit<CartState> {
 
   /// Clear cart
   Future<void> clearCart() async {
-    emit(CartLoading());
     try {
       _localItems.clear();
       _emitCartLoaded();
@@ -127,13 +131,15 @@ class CartCubit extends Cubit<CartState> {
   }
 
   void _emitCartLoaded() {
+    // Recalculate totals before emitting
+    final currentSubtotal = _localItems.fold(0.0, (sum, item) => sum + (item.finalPricePerUnit * item.quantity));
     emit(
       CartLoaded(
         CartModel(
           id: 'local_cart',
-          items: _localItems,
-          subtotal: subtotal,
-          finalTotal: subtotal,
+          items: List.from(_localItems), // Use a copy to prevent mutation issues
+          subtotal: currentSubtotal,
+          finalTotal: currentSubtotal,
         ),
       ),
     );
