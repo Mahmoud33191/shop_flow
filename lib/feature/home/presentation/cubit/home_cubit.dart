@@ -58,6 +58,7 @@ class HomeCubit extends Cubit<HomeState> {
           filteredProducts: _allProducts,
           categories: _categories,
           offers: _offers,
+          filteredOffers: _offers,
           selectedCategoryId: null,
         ),
       );
@@ -72,6 +73,7 @@ class HomeCubit extends Cubit<HomeState> {
           filteredProducts: [],
           categories: _categories,
           offers: _offers,
+          filteredOffers: _offers,
           selectedCategoryId: null,
         ),
       );
@@ -88,53 +90,87 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   /// Filter products by category
-  void filterByCategory(int? categoryId) {
+  Future<void> filterByCategory(int? categoryId) async {
     if (state is! HomeLoaded) return;
 
     final currentState = state as HomeLoaded;
 
-    if (categoryId == null) {
-      // Show all products
-      emit(
-        currentState.copyWith(
-          filteredProducts: _allProducts,
-          clearCategoryFilter: true,
-        ),
-      );
-    } else {
-      // Find the category name associated with this ID
-      // We need to do this because ProductModel only contains category names, not IDs
-      final category = _categories.firstWhere(
-        (c) => c.id == categoryId,
-        orElse: () => CategoryModel(id: -1, name: ''),
+    // If already selected, do nothing
+    if (currentState.selectedCategoryId == categoryId &&
+        currentState.searchQuery == null)
+      return;
+
+    emit(
+      currentState.copyWith(
+        isLoadingMore: true,
+        selectedCategoryId: categoryId,
+        clearSearchQuery: true,
+      ),
+    );
+
+    try {
+      final products = await _productDataSource.fetchProducts(
+        categoryId: categoryId,
       );
 
-      // If category not found, return empty list
-      if (category.id == -1) {
-        emit(
-          currentState.copyWith(
-            filteredProducts: [],
-            selectedCategoryId: categoryId,
-          ),
-        );
-        return;
-      }
-
-      // Filter by category name
-      final filtered = _allProducts.where((product) {
-        // Case-insensitive check just to be safe, though exact match is preferred
-        return product.categories.any(
-          (c) => c.toLowerCase() == category.name.toLowerCase(),
-        );
-      }).toList();
+      // Filter offers based on category
+      // For now, show all offers regardless of category since API doesn't support category-based offers
+      // In future, this can be updated when API provides categoryId with offers
+      final filteredOffers = _offers;
 
       emit(
         currentState.copyWith(
-          filteredProducts: filtered,
+          filteredProducts: products,
+          filteredOffers: filteredOffers,
           selectedCategoryId: categoryId,
+          isLoadingMore: false,
+          clearSearchQuery: true,
+          clearCategoryFilter: categoryId == null,
         ),
       );
+    } catch (e) {
+      debugPrint('Filter by category failed: $e');
+      emit(currentState.copyWith(isLoadingMore: false));
+      // Optionally emit error or keep old state
     }
+  }
+
+  /// Search products by query
+  Future<void> searchProducts(String query) async {
+    if (state is! HomeLoaded) return;
+
+    final currentState = state as HomeLoaded;
+
+    if (query.isEmpty) {
+      // If query is cleared, reset to current category or all products
+      await filterByCategory(currentState.selectedCategoryId);
+      return;
+    }
+
+    emit(currentState.copyWith(isLoadingMore: true, searchQuery: query));
+
+    try {
+      final products = await _productDataSource.fetchProducts(
+        categoryId: currentState.selectedCategoryId,
+        searchQuery: query,
+      );
+
+      emit(
+        currentState.copyWith(
+          filteredProducts: products,
+          searchQuery: query,
+          isLoadingMore: false,
+        ),
+      );
+    } catch (e) {
+      debugPrint('Search products failed: $e');
+      emit(currentState.copyWith(isLoadingMore: false));
+    }
+  }
+
+  /// Clear search and filters
+  Future<void> clearFilters() async {
+    await fetchHomeData();
   }
 
   /// Refresh all data

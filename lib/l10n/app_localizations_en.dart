@@ -9,6 +9,9 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get viewAll => 'View All';
+
+  @override
   String get appTitle => 'MarketFlow';
 
   @override
@@ -356,4 +359,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String errorPrefix(String message) {
     return 'Error: $message';
   }
+
+  @override
+  String get searchProducts => 'Search products...';
 }

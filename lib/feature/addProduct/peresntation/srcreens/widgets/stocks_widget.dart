@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_flow/core/theme/app_colors.dart';
 
 class StockBadge extends StatelessWidget {
   final int stockCount;
@@ -8,36 +9,28 @@ class StockBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool outOfStock = stockCount == 0;
+    final Color color = outOfStock ? AppColors.error : AppColors.success;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: outOfStock
-            ? Colors.red.withValues(alpha: 0.1)
-            : Colors.green.withValues(alpha: 0.1),
+        color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min, // مهم جدًا
+        mainAxisSize: MainAxisSize.min,
         children: [
-          /// النقطة اللي قبل النص
           Container(
-            width: 6,
-            height: 6,
-            decoration: BoxDecoration(
-              color: outOfStock ? Colors.red : Colors.green,
-              borderRadius: BorderRadius.circular(1),
-            ),
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
           ),
-
-          const SizedBox(width: 6),
-
-          /// النص
+          const SizedBox(width: 8),
           Text(
             outOfStock ? 'Out of stock' : '$stockCount in stock',
             style: TextStyle(
-              color: outOfStock ? Colors.red : Colors.green,
-              fontSize: 16,
+              color: color,
+              fontSize: 13,
               fontWeight: FontWeight.bold,
             ),
           ),

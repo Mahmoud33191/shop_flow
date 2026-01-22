@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_flow/core/theme/app_colors.dart';
 
 class ManageButtons extends StatelessWidget {
   const ManageButtons({
@@ -18,39 +19,43 @@ class ManageButtons extends StatelessWidget {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color.fromARGB(255, 196, 219, 238),
+              backgroundColor: AppColors.primary.withOpacity(0.15),
+              elevation: 0,
+              padding: const EdgeInsets.symmetric(vertical: 12),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(12),
               ),
             ),
             onPressed: () {},
             child: Text(
-              style: TextStyle(
-                color: const Color.fromARGB(255, 7, 125, 221),
-                fontSize: 18,
+              editbutton,
+              style: const TextStyle(
+                color: AppColors.primary,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
-              editbutton,
             ),
           ),
         ),
-        SizedBox(width: 12),
+        const SizedBox(width: 12),
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary.withOpacity(0.15),
+              elevation: 0,
+              padding: const EdgeInsets.symmetric(vertical: 12),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(12),
               ),
-              backgroundColor: Color.fromARGB(255, 196, 219, 238),
             ),
             onPressed: () {},
             child: Text(
-              style: TextStyle(
-                color: const Color.fromARGB(255, 7, 125, 221),
-                fontSize: 18,
+              stockButton,
+              style: const TextStyle(
+                color: AppColors.primary,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
-              stockButton,
             ),
           ),
         ),

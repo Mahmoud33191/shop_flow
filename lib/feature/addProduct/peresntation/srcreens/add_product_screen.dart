@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_flow/core/network/api/dio_consumer.dart';
-
+import 'package:shop_flow/core/theme/app_colors.dart';
 import 'package:shop_flow/core/utils/custom_button.dart';
 import 'package:shop_flow/core/utils/custom_text_field.dart';
 import 'package:shop_flow/feature/home/data/dataSource/product_data_source.dart';
@@ -120,8 +120,27 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.addNewProduct)),
+      backgroundColor: isDark
+          ? AppColors.darkBackground
+          : AppColors.lightBackground,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: isDark ? AppColors.darkBackground : Colors.white,
+        surfaceTintColor: Colors.transparent,
+        title: Text(
+          AppLocalizations.of(context)!.addNewProduct,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: isDark
+                ? AppColors.textPrimaryDark
+                : AppColors.textPrimaryLight,
+          ),
+        ),
+        iconTheme: IconThemeData(color: isDark ? Colors.white : Colors.black),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -198,7 +217,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     : null,
               ),
               const SizedBox(height: 16),
-              Text(AppLocalizations.of(context)!.selectCategoryPrompt),
+              Text(
+                AppLocalizations.of(context)!.selectCategoryPrompt,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: isDark
+                      ? AppColors.textPrimaryDark
+                      : AppColors.textPrimaryLight,
+                ),
+              ),
               const SizedBox(height: 8),
 
               // Dropdown for categories
@@ -209,18 +236,31 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(8),
+                    color: isDark ? AppColors.darkSurface : Colors.grey[100],
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+                    ),
                   ),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       isExpanded: true,
-                      hint: Text(AppLocalizations.of(context)!.selectCategory),
+                      hint: Text(
+                        AppLocalizations.of(context)!.selectCategory,
+                        style: TextStyle(
+                          color: isDark ? Colors.grey[400] : Colors.grey[600],
+                        ),
+                      ),
                       value: _selectedCategory,
+                      dropdownColor: isDark
+                          ? AppColors.darkSurface
+                          : Colors.white,
+                      style: TextStyle(
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
                       items: _categories.map((c) {
                         return DropdownMenuItem(
-                          value: c
-                              .name, // Using name as ID might not be available or name is what's expected
+                          value: c.name,
                           child: Text(c.name),
                         );
                       }).toList(),

@@ -17,7 +17,9 @@ class HomeLoaded extends HomeState {
   final List<ProductModel> filteredProducts;
   final List<CategoryModel> categories;
   final List<OfferModel> offers;
+  final List<OfferModel> filteredOffers;
   final int? selectedCategoryId;
+  final String? searchQuery;
   final bool isLoadingMore;
 
   HomeLoaded({
@@ -25,27 +27,34 @@ class HomeLoaded extends HomeState {
     required this.filteredProducts,
     required this.categories,
     required this.offers,
+    List<OfferModel>? filteredOffers,
     this.selectedCategoryId,
+    this.searchQuery,
     this.isLoadingMore = false,
-  });
+  }) : filteredOffers = filteredOffers ?? offers;
 
   HomeLoaded copyWith({
     List<ProductModel>? products,
     List<ProductModel>? filteredProducts,
     List<CategoryModel>? categories,
     List<OfferModel>? offers,
+    List<OfferModel>? filteredOffers,
     int? selectedCategoryId,
+    String? searchQuery,
     bool? isLoadingMore,
     bool clearCategoryFilter = false,
+    bool clearSearchQuery = false,
   }) {
     return HomeLoaded(
       products: products ?? this.products,
       filteredProducts: filteredProducts ?? this.filteredProducts,
       categories: categories ?? this.categories,
       offers: offers ?? this.offers,
+      filteredOffers: filteredOffers ?? this.filteredOffers,
       selectedCategoryId: clearCategoryFilter
           ? null
           : (selectedCategoryId ?? this.selectedCategoryId),
+      searchQuery: clearSearchQuery ? null : (searchQuery ?? this.searchQuery),
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
     );
   }

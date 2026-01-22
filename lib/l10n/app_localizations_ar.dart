@@ -9,6 +9,9 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
+  String get viewAll => 'عرض الكل';
+
+  @override
   String get appTitle => 'ماركت فلو';
 
   @override
@@ -355,4 +358,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String errorPrefix(String message) {
     return 'خطأ: $message';
   }
+
+  @override
+  String get searchProducts => 'البحث عن المنتجات...';
 }

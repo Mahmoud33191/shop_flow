@@ -11,8 +11,12 @@ import 'package:shop_flow/feature/home/data/models/review_model.dart';
 /// Abstract class defining the contract for product and category data operations.
 abstract class IProductDataSource {
   Future<List<CategoryModel>> fetchCategories();
-  // 🔐 MODIFICATION: Added searchQuery parameter
-  Future<List<ProductModel>> fetchProducts({int? categoryId, String? searchQuery});
+  Future<List<ProductModel>> fetchProducts({
+    int? categoryId,
+    String? searchQuery,
+    int pageNumber = 1,
+    int pageSize = 100,
+  });
   Future<List<OfferModel>> fetchOffers();
   Future<ProductModel?> fetchProductById(String productId);
   Future<List<ReviewModel>> fetchProductReviews(String productId);
@@ -93,18 +97,23 @@ class ProductDataSource implements IProductDataSource {
     }
   }
 
-
   @override
-  // 🔐 MODIFICATION: Added searchQuery parameter to the implementation
-  Future<List<ProductModel>> fetchProducts({int? categoryId, String? searchQuery}) async {
+  Future<List<ProductModel>> fetchProducts({
+    int? categoryId,
+    String? searchQuery,
+    int pageNumber = 1,
+    int pageSize = 100,
+  }) async {
     try {
       // Build query parameters dynamically
-      final queryParameters = <String, dynamic>{};
+      final queryParameters = <String, dynamic>{
+        'pageNumber': pageNumber,
+        'pageSize': pageSize,
+      };
       if (categoryId != null) {
         queryParameters['categoryId'] = categoryId;
       }
       if (searchQuery != null && searchQuery.isNotEmpty) {
-        // Assuming your API uses 'name' or 'q' for text search. Adjust if needed.
         queryParameters['name'] = searchQuery;
       }
 

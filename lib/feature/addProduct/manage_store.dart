@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_flow/core/network/api/dio_consumer.dart';
+import 'package:shop_flow/core/theme/app_colors.dart';
 import 'package:shop_flow/feature/addProduct/peresntation/srcreens/add_product_screen.dart';
 import 'package:shop_flow/feature/addProduct/peresntation/srcreens/widgets/product_card.dart';
 import 'package:shop_flow/feature/addProduct/peresntation/srcreens/widgets/search_widget.dart';
@@ -110,14 +111,26 @@ class _ManageStoreState extends State<ManageStore> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: isDark
+          ? AppColors.darkBackground
+          : AppColors.lightBackground,
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: isDark ? AppColors.darkBackground : Colors.white,
+        surfaceTintColor: Colors.transparent,
         title: Text(
           AppLocalizations.of(context)!.manageStore,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: isDark
+                ? AppColors.textPrimaryDark
+                : AppColors.textPrimaryLight,
+          ),
         ),
         centerTitle: true,
+        iconTheme: IconThemeData(color: isDark ? Colors.white : Colors.black),
       ),
       body: RefreshIndicator(
         onRefresh: _loadProducts,
@@ -132,9 +145,12 @@ class _ManageStoreState extends State<ManageStore> {
                     AppLocalizations.of(
                       context,
                     )!.allProducts, // Or add "My Products" to arb
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
+                      color: isDark
+                          ? AppColors.textPrimaryDark
+                          : AppColors.textPrimaryLight,
                     ),
                   ),
                   Container(
@@ -143,13 +159,13 @@ class _ManageStoreState extends State<ManageStore> {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 196, 219, 238),
+                      color: AppColors.primary.withOpacity(0.15),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
                       '${_products.length} Active',
                       style: const TextStyle(
-                        color: Color.fromARGB(255, 7, 125, 221),
+                        color: AppColors.primary,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -166,12 +182,22 @@ class _ManageStoreState extends State<ManageStore> {
                   ? Center(
                       child: Text(
                         AppLocalizations.of(context)!.errorPrefix(_error!),
+                        style: TextStyle(
+                          color: isDark
+                              ? AppColors.textSecondaryDark
+                              : AppColors.textSecondaryLight,
+                        ),
                       ),
                     )
                   : _products.isEmpty
                   ? Center(
                       child: Text(
                         AppLocalizations.of(context)!.noProductsFound,
+                        style: TextStyle(
+                          color: isDark
+                              ? AppColors.textSecondaryDark
+                              : AppColors.textSecondaryLight,
+                        ),
                       ),
                     )
                   : ListView.builder(
@@ -198,6 +224,9 @@ class _ManageStoreState extends State<ManageStore> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        elevation: 4,
         onPressed: () async {
           final result = await Navigator.push(
             context,
@@ -207,7 +236,7 @@ class _ManageStoreState extends State<ManageStore> {
             _loadProducts();
           }
         },
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add, size: 28),
       ),
     );
   }

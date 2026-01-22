@@ -1,5 +1,6 @@
 {
     "@@locale": "en",
+    "viewAll": "View All",
     "appTitle": "MarketFlow",
     "slogan": "The Future of Commerce",
     "welcomeBack": "Welcome Back!",
@@ -140,5 +141,6 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "searchProducts": "Search products..."
 }

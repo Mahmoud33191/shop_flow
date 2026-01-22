@@ -50,9 +50,9 @@ class HomeViewBody extends StatelessWidget {
               child: CustomScrollView(
                 slivers: [
                   // Offers Section
-                  if (state.offers.isNotEmpty)
+                  if (state.filteredOffers.isNotEmpty)
                     SliverToBoxAdapter(
-                      child: _buildOffersSection(context, state.offers),
+                      child: _buildOffersSection(context, state.filteredOffers),
                     ),
 
                   // Categories Section
@@ -65,88 +65,92 @@ class HomeViewBody extends StatelessWidget {
                       ),
                     ),
 
-                  // Products Header
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            state.selectedCategoryId != null
-                                ? AppLocalizations.of(context)!.filteredProducts
-                                : AppLocalizations.of(context)!.allProducts,
-                            style: Theme.of(context).textTheme.titleLarge
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            '${state.filteredProducts.length} ${AppLocalizations.of(context)!.items}',
-                            style: TextStyle(
-                              color: AppColors.textSecondaryLight,
+                  // Products Section
+                  if (state.isLoadingMore)
+                    const SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Center(child: CircularProgressIndicator()),
+                    )
+                  else if (state.filteredProducts.isEmpty)
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.inventory_2_outlined,
+                              size: 80,
+                              color: Colors.grey[400],
                             ),
-                          ),
-                        ],
+                            const SizedBox(height: 16),
+                            Text(
+                              AppLocalizations.of(context)!.noProductsFound,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            if (state.selectedCategoryId != null ||
+                                state.searchQuery != null) ...[
+                              const SizedBox(height: 8),
+                              TextButton(
+                                onPressed: () {
+                                  context.read<HomeCubit>().filterByCategory(
+                                    null,
+                                  );
+                                },
+                                child: Text(
+                                  AppLocalizations.of(context)!.showAllProducts,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                    )
+                  else ...[
+                    // Products Header
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              state.selectedCategoryId != null
+                                  ? AppLocalizations.of(
+                                      context,
+                                    )!.filteredProducts
+                                  : AppLocalizations.of(context)!.allProducts,
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              '${state.filteredProducts.length} ${AppLocalizations.of(context)!.items}',
+                              style: TextStyle(
+                                color: AppColors.textSecondaryLight,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-
-                  // Products Grid
-                  state.filteredProducts.isEmpty
-                      ? SliverFillRemaining(
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.inventory_2_outlined,
-                                  size: 80,
-                                  color: Colors.grey[400],
-                                ),
-                                const SizedBox(height: 16),
-                                Text(
-                                  AppLocalizations.of(context)!.noProductsFound,
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.titleMedium,
-                                ),
-                                if (state.selectedCategoryId != null) ...[
-                                  const SizedBox(height: 8),
-                                  TextButton(
-                                    onPressed: () {
-                                      context
-                                          .read<HomeCubit>()
-                                          .filterByCategory(null);
-                                    },
-                                    child: Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      )!.showAllProducts,
-                                    ),
-                                  ),
-                                ],
-                              ],
+                    // Products Grid
+                    SliverPadding(
+                      padding: const EdgeInsets.all(12),
+                      sliver: SliverGrid(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 12,
+                              childAspectRatio: 0.65,
                             ),
-                          ),
-                        )
-                      : SliverPadding(
-                          padding: const EdgeInsets.all(12),
-                          sliver: SliverGrid(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 12,
-                                  mainAxisSpacing: 12,
-                                  childAspectRatio: 0.65,
-                                ),
-                            delegate: SliverChildBuilderDelegate((
-                              context,
-                              index,
-                            ) {
-                              final product = state.filteredProducts[index];
-                              return _buildProductCard(context, product);
-                            }, childCount: state.filteredProducts.length),
-                          ),
-                        ),
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                          final product = state.filteredProducts[index];
+                          return _buildProductCard(context, product);
+                        }, childCount: state.filteredProducts.length),
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -156,6 +160,162 @@ class HomeViewBody extends StatelessWidget {
         return const SizedBox.shrink();
       },
     );
+  }
+
+  /// Build horizontal product sections for each category
+  List<Widget> _buildCategorySections(BuildContext context, HomeLoaded state) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final List<Widget> sections = [];
+
+    // If no categories or products, show nothing
+    if (state.categories.isEmpty || state.products.isEmpty) {
+      return sections;
+    }
+
+    // Create a map of category name to products
+    final Map<String, List<ProductModel>> categoryProductsMap = {};
+
+    for (final product in state.products) {
+      for (final categoryName in product.categories) {
+        categoryProductsMap.putIfAbsent(categoryName, () => []);
+        categoryProductsMap[categoryName]!.add(product);
+      }
+    }
+
+    // Build sections for each category that has products
+    for (final category in state.categories) {
+      final categoryProducts = categoryProductsMap[category.name] ?? [];
+
+      if (categoryProducts.isEmpty) continue;
+
+      sections.add(
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Category Header
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 20, 16, 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Icon(
+                            Icons.category_outlined,
+                            color: AppColors.primary,
+                            size: 20,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          category.name,
+                          style: Theme.of(context).textTheme.titleLarge
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: isDark ? Colors.white : Colors.black87,
+                              ),
+                        ),
+                      ],
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        context.read<HomeCubit>().filterByCategory(category.id);
+                      },
+                      child: Row(
+                        children: [
+                          Text(
+                            AppLocalizations.of(context)!.viewAll,
+                            style: TextStyle(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: 14,
+                            color: AppColors.primary,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Horizontal Product List
+              SizedBox(
+                height: 260,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  itemCount: categoryProducts.length > 10
+                      ? 10
+                      : categoryProducts.length,
+                  itemBuilder: (context, index) {
+                    final product = categoryProducts[index];
+                    return Container(
+                      width: 160,
+                      margin: const EdgeInsets.only(right: 12),
+                      child: _buildProductCard(context, product),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    // If no sections were created (products have no categories), show all products in one section
+    if (sections.isEmpty && state.products.isNotEmpty) {
+      sections.add(
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 20, 16, 12),
+                child: Text(
+                  AppLocalizations.of(context)!.allProducts,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: isDark ? Colors.white : Colors.black87,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 260,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  itemCount: state.products.length > 10
+                      ? 10
+                      : state.products.length,
+                  itemBuilder: (context, index) {
+                    final product = state.products[index];
+                    return Container(
+                      width: 160,
+                      margin: const EdgeInsets.only(right: 12),
+                      child: _buildProductCard(context, product),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return sections;
   }
 
   Widget _buildErrorWidget(BuildContext context, String message) {
@@ -367,21 +527,45 @@ class HomeViewBody extends StatelessWidget {
     bool isSelected,
     VoidCallback onTap,
   ) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 4),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : Colors.grey[200],
+          color: isSelected
+              ? AppColors.primary
+              : (isDark ? AppColors.darkSurface : Colors.grey[100]),
           borderRadius: BorderRadius.circular(25),
-          border: isSelected ? null : Border.all(color: Colors.grey[300]!),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: AppColors.primary.withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ]
+              : [],
+          border: isSelected
+              ? null
+              : Border.all(
+                  color: isDark ? Colors.white10 : Colors.grey[300]!,
+                  width: 1,
+                ),
         ),
-        child: Text(
-          name,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black87,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+        child: Center(
+          child: Text(
+            name,
+            style: TextStyle(
+              color: isSelected
+                  ? Colors.white
+                  : (isDark ? Colors.white70 : Colors.black87),
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+              fontSize: 14,
+            ),
           ),
         ),
       ),
