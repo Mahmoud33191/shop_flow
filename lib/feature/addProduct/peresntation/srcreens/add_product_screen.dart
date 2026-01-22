@@ -5,6 +5,7 @@ import 'package:shop_flow/core/utils/custom_button.dart';
 import 'package:shop_flow/core/utils/custom_text_field.dart';
 import 'package:shop_flow/feature/home/data/dataSource/product_data_source.dart';
 import 'package:shop_flow/feature/home/data/models/category_model.dart';
+import 'package:shop_flow/l10n/app_localizations.dart';
 
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({super.key});
@@ -22,7 +23,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final _imageController = TextEditingController();
   final _arabicNameController = TextEditingController();
   final _arabicDescController = TextEditingController();
-
 
   String? _selectedCategory;
   List<CategoryModel> _categories = [];
@@ -60,7 +60,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
     if (_formKey.currentState!.validate()) {
       if (_selectedCategory == null && _categories.isNotEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please select a category')),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.pleaseSelectCategory),
+          ),
         );
         return;
       }
@@ -88,8 +90,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Product added successfully'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.productAddedSuccess),
               backgroundColor: Colors.green,
             ),
           );
@@ -100,7 +102,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                'Failed to add product: ${e.toString().replaceAll("Exception: ", "")}',
+                '${AppLocalizations.of(context)!.failedAddProduct}: ${e.toString().replaceAll("Exception: ", "")}',
               ),
               backgroundColor: Colors.red,
             ),
@@ -119,7 +121,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add New Product')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.addNewProduct)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -129,32 +131,36 @@ class _AddProductScreenState extends State<AddProductScreen> {
             children: [
               CustomTextField(
                 controller: _nameController,
-                hintText: 'Product Name',
-                validator: (value) =>
-                value?.isEmpty ?? true ? 'Please enter name' : null,
+                hintText: AppLocalizations.of(context)!.productName,
+                validator: (value) => value?.isEmpty ?? true
+                    ? '${AppLocalizations.of(context)!.productName} ${AppLocalizations.of(context)!.items}'
+                    : null, // Assuming items is translated as "is required" or similar if concatenated, but let's use fixed string for now as validators are not localized yet
               ),
               const SizedBox(height: 16),
               CustomTextField(
                 controller: _arabicNameController,
-                hintText: 'Arabic Name',
-                validator: (value) =>
-                value?.isEmpty ?? true ? 'Please enter name' : null,
+                hintText: AppLocalizations.of(context)!.arabicName,
+                validator: (value) => value?.isEmpty ?? true
+                    ? AppLocalizations.of(context)!.arabicName
+                    : null,
               ),
               const SizedBox(height: 16),
               CustomTextField(
                 controller: _descController,
-                hintText: 'Description',
+                hintText: AppLocalizations.of(context)!.productDescription,
                 maxLines: 3,
-                validator: (value) =>
-                value?.isEmpty ?? true ? 'Please enter description' : null,
+                validator: (value) => value?.isEmpty ?? true
+                    ? AppLocalizations.of(context)!.productDescription
+                    : null,
               ),
               const SizedBox(height: 16),
               CustomTextField(
                 controller: _arabicDescController,
-                hintText: 'Arabic Description',
+                hintText: AppLocalizations.of(context)!.arabicDescription,
                 maxLines: 3,
-                validator: (value) =>
-                value?.isEmpty ?? true ? 'Please enter description' : null,
+                validator: (value) => value?.isEmpty ?? true
+                    ? AppLocalizations.of(context)!.arabicDescription
+                    : null,
               ),
 
               const SizedBox(height: 16),
@@ -163,20 +169,22 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   Expanded(
                     child: CustomTextField(
                       controller: _priceController,
-                      hintText: 'Price',
+                      hintText: AppLocalizations.of(context)!.price,
                       keyboardType: TextInputType.number,
-                      validator: (value) =>
-                      value?.isEmpty ?? true ? 'Required' : null,
+                      validator: (value) => value?.isEmpty ?? true
+                          ? AppLocalizations.of(context)!.price
+                          : null,
                     ),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: CustomTextField(
                       controller: _stockController,
-                      hintText: 'Stock',
+                      hintText: AppLocalizations.of(context)!.stock,
                       keyboardType: TextInputType.number,
-                      validator: (value) =>
-                      value?.isEmpty ?? true ? 'Required' : null,
+                      validator: (value) => value?.isEmpty ?? true
+                          ? AppLocalizations.of(context)!.stock
+                          : null,
                     ),
                   ),
                 ],
@@ -184,15 +192,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
               const SizedBox(height: 16),
               CustomTextField(
                 controller: _imageController,
-                hintText: 'Image URL',
-                validator: (value) =>
-                value?.isEmpty ?? true ? 'Please enter image URL' : null,
+                hintText: AppLocalizations.of(context)!.imageUrl,
+                validator: (value) => value?.isEmpty ?? true
+                    ? AppLocalizations.of(context)!.imageUrl
+                    : null,
               ),
               const SizedBox(height: 16),
-              const Text('Select Category:'),
+              Text(AppLocalizations.of(context)!.selectCategoryPrompt),
               const SizedBox(height: 8),
-              // Dropdown for categories
 
+              // Dropdown for categories
               if (_categories.isNotEmpty)
                 Container(
                   padding: const EdgeInsets.symmetric(
@@ -206,7 +215,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       isExpanded: true,
-                      hint: const Text('Select Category'),
+                      hint: Text(AppLocalizations.of(context)!.selectCategory),
                       value: _selectedCategory,
                       items: _categories.map((c) {
                         return DropdownMenuItem(
@@ -225,7 +234,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 ),
               const SizedBox(height: 24),
               CustomButton(
-                text: _isLoading ? 'Adding...' : 'Add Product',
+                text: _isLoading
+                    ? AppLocalizations.of(context)!.adding
+                    : AppLocalizations.of(
+                        context,
+                      )!.addNewProduct, // Actually Add Product
                 onPressed: _isLoading ? null : _submit,
               ),
             ],

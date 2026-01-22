@@ -20,7 +20,8 @@ class _SearchViewState extends State<SearchView> {
   bool _isLoading = false;
   String? _error;
   List<ProductModel> _results = [];
-  bool _hasSearched = false; // To differentiate initial state from an empty search result
+  bool _hasSearched =
+      false; // To differentiate initial state from an empty search result
 
   final _searchController = TextEditingController();
   Timer? _debounce;
@@ -64,7 +65,9 @@ class _SearchViewState extends State<SearchView> {
     });
 
     try {
-      final products = await _productDataSource.fetchProducts(searchQuery: query);
+      final products = await _productDataSource.fetchProducts(
+        searchQuery: query,
+      );
       if (!mounted) return;
       setState(() {
         _results = products;
@@ -189,7 +192,8 @@ class _SearchViewState extends State<SearchView> {
         crossAxisCount: 2, // Display two items per row
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
-        childAspectRatio: 0.75, // Adjust this ratio to fit your ProductCard design
+        childAspectRatio:
+            0.65, // Adjust this ratio to fit your ProductCard design
       ),
       itemCount: products.length,
       itemBuilder: (context, index) {
@@ -197,8 +201,8 @@ class _SearchViewState extends State<SearchView> {
         return _buildProductCard(context, product);
       },
     );
-
   }
+
   Widget _buildProductCard(BuildContext context, ProductModel product) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -334,5 +338,4 @@ class _SearchViewState extends State<SearchView> {
       ),
     );
   }
-
 }

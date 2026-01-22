@@ -9,8 +9,9 @@ import 'core/utils/nav_bar.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/cubit/app_cubit.dart';
+import 'feature/cart/presentation/cubit/cart_cubit.dart';
 
-// Localization
+import 'feature/auth/presentation/cubit/auth_cubit.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
@@ -27,8 +28,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AppCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AppCubit()),
+        BlocProvider(create: (context) => CartCubit()),
+        BlocProvider(create: (context) => AuthCubit()),
+      ],
       child: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
           return MaterialApp(

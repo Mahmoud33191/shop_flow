@@ -445,6 +445,336 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Try Again'**
   String get tryAgain;
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get saveChanges;
+
+  /// No description provided for @updateProfileSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile updated successfully'**
+  String get updateProfileSuccess;
+
+  /// No description provided for @reviewSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Review submitted successfully'**
+  String get reviewSubmitted;
+
+  /// No description provided for @writeReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a Review'**
+  String get writeReview;
+
+  /// No description provided for @shareThoughts.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your thoughts...'**
+  String get shareThoughts;
+
+  /// No description provided for @submit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get submit;
+
+  /// No description provided for @seeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See All'**
+  String get seeAll;
+
+  /// No description provided for @noReviewsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No reviews yet'**
+  String get noReviewsYet;
+
+  /// No description provided for @beFirstReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Be the first to review this product'**
+  String get beFirstReview;
+
+  /// No description provided for @addedToCart.
+  ///
+  /// In en, this message translates to:
+  /// **'{productName} added to cart'**
+  String addedToCart(String productName);
+
+  /// No description provided for @failedAddToCart.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to add to cart'**
+  String get failedAddToCart;
+
+  /// No description provided for @failedSubmitReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to submit review'**
+  String get failedSubmitReview;
+
+  /// No description provided for @adding.
+  ///
+  /// In en, this message translates to:
+  /// **'Adding...'**
+  String get adding;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @logoutConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to logout?'**
+  String get logoutConfirmation;
+
+  /// No description provided for @deleteProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Product?'**
+  String get deleteProduct;
+
+  /// No description provided for @deleteProductConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete \"{productName}\"?'**
+  String deleteProductConfirmation(String productName);
+
+  /// No description provided for @productDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'{productName} deleted'**
+  String productDeleted(String productName);
+
+  /// No description provided for @failedDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete'**
+  String get failedDelete;
+
+  /// No description provided for @addNewProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Product'**
+  String get addNewProduct;
+
+  /// No description provided for @productName.
+  ///
+  /// In en, this message translates to:
+  /// **'Product Name'**
+  String get productName;
+
+  /// No description provided for @arabicName.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic Name'**
+  String get arabicName;
+
+  /// No description provided for @productDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Product Description'**
+  String get productDescription;
+
+  /// No description provided for @arabicDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic Description'**
+  String get arabicDescription;
+
+  /// No description provided for @price.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get price;
+
+  /// No description provided for @stock.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock'**
+  String get stock;
+
+  /// No description provided for @imageUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Image URL'**
+  String get imageUrl;
+
+  /// No description provided for @selectCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Category'**
+  String get selectCategory;
+
+  /// No description provided for @selectCategoryPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Category:'**
+  String get selectCategoryPrompt;
+
+  /// No description provided for @pleaseSelectCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a category'**
+  String get pleaseSelectCategory;
+
+  /// No description provided for @productAddedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Product added successfully'**
+  String get productAddedSuccess;
+
+  /// No description provided for @failedAddProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to add product'**
+  String get failedAddProduct;
+
+  /// No description provided for @verifyOtp.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify OTP'**
+  String get verifyOtp;
+
+  /// No description provided for @checkEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email'**
+  String get checkEmail;
+
+  /// No description provided for @otpSentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a verification code to'**
+  String get otpSentTo;
+
+  /// No description provided for @verify.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify'**
+  String get verify;
+
+  /// No description provided for @didNotReceiveCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t receive the code?'**
+  String get didNotReceiveCode;
+
+  /// No description provided for @resend.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend'**
+  String get resend;
+
+  /// No description provided for @createNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Create New Password'**
+  String get createNewPassword;
+
+  /// No description provided for @resetPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get resetPassword;
+
+  /// No description provided for @resetPasswordInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Your new password must be different from previously used passwords.'**
+  String get resetPasswordInstructions;
+
+  /// No description provided for @newPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get newPassword;
+
+  /// No description provided for @enterNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter new password'**
+  String get enterNewPassword;
+
+  /// No description provided for @confirmNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm new password'**
+  String get confirmNewPassword;
+
+  /// No description provided for @passwordResetSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset successfully'**
+  String get passwordResetSuccess;
+
+  /// No description provided for @verificationSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification successful'**
+  String get verificationSuccessful;
+
+  /// No description provided for @currentPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Password'**
+  String get currentPassword;
+
+  /// No description provided for @enterCurrentPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your current password'**
+  String get enterCurrentPassword;
+
+  /// No description provided for @passwordChangedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed successfully'**
+  String get passwordChangedSuccess;
+
+  /// No description provided for @passwordRequirements.
+  ///
+  /// In en, this message translates to:
+  /// **'Password Requirements:'**
+  String get passwordRequirements;
+
+  /// No description provided for @reqAtLeast8Chars.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 8 characters'**
+  String get reqAtLeast8Chars;
+
+  /// No description provided for @reqUppercase.
+  ///
+  /// In en, this message translates to:
+  /// **'At least one uppercase letter'**
+  String get reqUppercase;
+
+  /// No description provided for @reqNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'At least one number'**
+  String get reqNumber;
+
+  /// No description provided for @reqSpecialChar.
+  ///
+  /// In en, this message translates to:
+  /// **'At least one special character'**
+  String get reqSpecialChar;
+
+  /// No description provided for @errorPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {message}'**
+  String errorPrefix(String message);
 }
 
 class _AppLocalizationsDelegate

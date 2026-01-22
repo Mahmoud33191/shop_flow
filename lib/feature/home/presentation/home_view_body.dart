@@ -8,6 +8,7 @@ import 'package:shop_flow/feature/home/data/models/product_model.dart';
 import 'package:shop_flow/feature/home/presentation/cubit/home_cubit.dart';
 import 'package:shop_flow/feature/home/presentation/cubit/home_states.dart';
 import 'package:shop_flow/feature/home/presentation/screens/product_details_screen.dart';
+import 'package:shop_flow/l10n/app_localizations.dart';
 
 class HomeViewBody extends StatelessWidget {
   const HomeViewBody({super.key});
@@ -43,101 +44,111 @@ class HomeViewBody extends StatelessWidget {
 
         // Handle HomeLoaded State
         if (state is HomeLoaded) {
-          return RefreshIndicator(
-            onRefresh: () => context.read<HomeCubit>().refresh(),
-            child: CustomScrollView(
-              slivers: [
-                // Offers Section
-                if (state.offers.isNotEmpty)
-                  SliverToBoxAdapter(
-                    child: _buildOffersSection(context, state.offers),
-                  ),
+          return SafeArea(
+            child: RefreshIndicator(
+              onRefresh: () => context.read<HomeCubit>().refresh(),
+              child: CustomScrollView(
+                slivers: [
+                  // Offers Section
+                  if (state.offers.isNotEmpty)
+                    SliverToBoxAdapter(
+                      child: _buildOffersSection(context, state.offers),
+                    ),
 
-                // Categories Section
-                if (state.categories.isNotEmpty)
+                  // Categories Section
+                  if (state.categories.isNotEmpty)
+                    SliverToBoxAdapter(
+                      child: _buildCategoriesSection(
+                        context,
+                        state.categories,
+                        state.selectedCategoryId,
+                      ),
+                    ),
+
+                  // Products Header
                   SliverToBoxAdapter(
-                    child: _buildCategoriesSection(
-                      context,
-                      state.categories,
-                      state.selectedCategoryId,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            state.selectedCategoryId != null
+                                ? AppLocalizations.of(context)!.filteredProducts
+                                : AppLocalizations.of(context)!.allProducts,
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '${state.filteredProducts.length} ${AppLocalizations.of(context)!.items}',
+                            style: TextStyle(
+                              color: AppColors.textSecondaryLight,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
 
-                // Products Header
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          state.selectedCategoryId != null
-                              ? 'Filtered Products'
-                              : 'All Products',
-                          style: Theme.of(context).textTheme.titleLarge
-                              ?.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          '${state.filteredProducts.length} items',
-                          style: TextStyle(color: AppColors.textSecondaryLight),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // Products Grid
-                state.filteredProducts.isEmpty
-                    ? SliverFillRemaining(
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.inventory_2_outlined,
-                                size: 80,
-                                color: Colors.grey[400],
-                              ),
-                              const SizedBox(height: 16),
-                              Text(
-                                'No products found',
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                              if (state.selectedCategoryId != null) ...[
-                                const SizedBox(height: 8),
-                                TextButton(
-                                  onPressed: () {
-                                    context.read<HomeCubit>().filterByCategory(
-                                      null,
-                                    );
-                                  },
-                                  child: const Text('Show all products'),
+                  // Products Grid
+                  state.filteredProducts.isEmpty
+                      ? SliverFillRemaining(
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.inventory_2_outlined,
+                                  size: 80,
+                                  color: Colors.grey[400],
                                 ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  AppLocalizations.of(context)!.noProductsFound,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.titleMedium,
+                                ),
+                                if (state.selectedCategoryId != null) ...[
+                                  const SizedBox(height: 8),
+                                  TextButton(
+                                    onPressed: () {
+                                      context
+                                          .read<HomeCubit>()
+                                          .filterByCategory(null);
+                                    },
+                                    child: Text(
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.showAllProducts,
+                                    ),
+                                  ),
+                                ],
                               ],
-                            ],
+                            ),
+                          ),
+                        )
+                      : SliverPadding(
+                          padding: const EdgeInsets.all(12),
+                          sliver: SliverGrid(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 12,
+                                  mainAxisSpacing: 12,
+                                  childAspectRatio: 0.65,
+                                ),
+                            delegate: SliverChildBuilderDelegate((
+                              context,
+                              index,
+                            ) {
+                              final product = state.filteredProducts[index];
+                              return _buildProductCard(context, product);
+                            }, childCount: state.filteredProducts.length),
                           ),
                         ),
-                      )
-                    : SliverPadding(
-                        padding: const EdgeInsets.all(12),
-                        sliver: SliverGrid(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 12,
-                                mainAxisSpacing: 12,
-                                childAspectRatio: 0.7,
-                              ),
-                          delegate: SliverChildBuilderDelegate((
-                            context,
-                            index,
-                          ) {
-                            final product = state.filteredProducts[index];
-                            return _buildProductCard(context, product);
-                          }, childCount: state.filteredProducts.length),
-                        ),
-                      ),
-              ],
+                ],
+              ),
             ),
           );
         }
@@ -165,7 +176,7 @@ class HomeViewBody extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: () => context.read<HomeCubit>().fetchHomeData(),
               icon: const Icon(Icons.refresh),
-              label: const Text('Try Again'),
+              label: Text(AppLocalizations.of(context)!.tryAgain),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 foregroundColor: Colors.white,
@@ -188,7 +199,7 @@ class HomeViewBody extends StatelessWidget {
               Icon(Icons.local_offer, color: AppColors.primary, size: 24),
               const SizedBox(width: 8),
               Text(
-                'Special Offers',
+                AppLocalizations.of(context)!.specialOffers,
                 style: Theme.of(
                   context,
                 ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
@@ -312,7 +323,7 @@ class HomeViewBody extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 20, 16, 12),
           child: Text(
-            'Categories',
+            AppLocalizations.of(context)!.categories,
             style: Theme.of(
               context,
             ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
@@ -330,7 +341,7 @@ class HomeViewBody extends StatelessWidget {
                 final isSelected = selectedCategoryId == null;
                 return _buildCategoryChip(
                   context,
-                  'All',
+                  AppLocalizations.of(context)!.all,
                   isSelected,
                   () => context.read<HomeCubit>().filterByCategory(null),
                 );
@@ -383,7 +394,7 @@ class HomeViewBody extends StatelessWidget {
     List<CategoryModel> categories,
   ) {
     if (products.isEmpty) {
-      return const Center(child: Text("No products found."));
+      return Center(child: Text(AppLocalizations.of(context)!.noProductsFound));
     }
 
     return GridView.builder(
@@ -393,7 +404,7 @@ class HomeViewBody extends StatelessWidget {
         crossAxisCount: 2,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
-        childAspectRatio: 0.7,
+        childAspectRatio: 0.65,
       ),
       itemBuilder: (context, index) {
         final product = products[index];

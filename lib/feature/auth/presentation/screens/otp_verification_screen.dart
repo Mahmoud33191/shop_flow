@@ -6,6 +6,7 @@ import 'package:shop_flow/core/utils/custom_button.dart';
 import 'package:shop_flow/feature/auth/presentation/cubit/auth_cubit.dart';
 import 'package:shop_flow/feature/auth/presentation/screens/reset_password_screen.dart';
 import 'package:shop_flow/feature/auth/presentation/screens/login_screen.dart';
+import 'package:shop_flow/l10n/app_localizations.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   final String email;
@@ -70,7 +71,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           } else if (state is AuthSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.message ?? 'Verification successful'),
+                content: Text(
+                  state.message ??
+                      AppLocalizations.of(context)!.verificationSuccessful,
+                ),
                 backgroundColor: AppColors.success,
               ),
             );
@@ -90,7 +94,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         },
         builder: (context, state) {
           return Scaffold(
-            appBar: AppBar(title: const Text('Verify OTP'), centerTitle: true),
+            appBar: AppBar(
+              title: Text(AppLocalizations.of(context)!.verifyOtp),
+              centerTitle: true,
+            ),
             body: Padding(
               padding: const EdgeInsets.all(24),
               child: Column(
@@ -104,7 +111,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'Check your email',
+                    AppLocalizations.of(context)!.checkEmail,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -112,7 +119,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'We sent a verification code to\n${widget.email}',
+                    '${AppLocalizations.of(context)!.otpSentTo}\n${widget.email}',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: isDark
                           ? AppColors.textSecondaryDark
@@ -175,7 +182,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   ),
                   const SizedBox(height: 32),
                   CustomButton(
-                    text: 'Verify',
+                    text: AppLocalizations.of(context)!.verify,
                     onPressed: () => _verifyOtp(context),
                     isLoading: state is AuthLoading,
                   ),
@@ -184,7 +191,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Didn't receive the code? ",
+                        AppLocalizations.of(context)!.didNotReceiveCode,
                         style: TextStyle(
                           color: isDark
                               ? AppColors.textSecondaryDark
@@ -198,7 +205,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           );
                         },
                         child: Text(
-                          'Resend',
+                          AppLocalizations.of(context)!.resend,
                           style: TextStyle(
                             color: AppColors.primary,
                             fontWeight: FontWeight.bold,

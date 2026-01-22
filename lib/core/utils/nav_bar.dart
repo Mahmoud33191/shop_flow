@@ -23,11 +23,8 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => NavigationCubit()),
-        BlocProvider(create: (context) => CartCubit()),
-      ],
+    return BlocProvider(
+      create: (context) => NavigationCubit(),
       child: BlocBuilder<NavigationCubit, int>(
         builder: (context, currentIndex) {
           return Scaffold(
@@ -49,50 +46,51 @@ class MainPage extends StatelessWidget {
             body: IndexedStack(index: currentIndex, children: pages),
 
             // 2. Use BottomAppBar to enable the notch effect
-            bottomNavigationBar: BottomAppBar(
-              shape: const CircularNotchedRectangle(),
-              notchMargin: 8.0,
-              clipBehavior: Clip.antiAlias,
-              padding: EdgeInsets.zero,
-              height: 70,
-              child: BottomNavigationBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                type: BottomNavigationBarType.fixed,
-                currentIndex: currentIndex,
-                onTap: (index) {
-                  context.read<NavigationCubit>().updateIndex(index);
-                },
-                selectedItemColor: AppColors.primary,
-                unselectedItemColor: Colors.grey,
-                showUnselectedLabels: false,
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: AppLocalizations.of(context)!.home,
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.search),
-                    label: AppLocalizations.of(context)!.search,
-                  ),
-                  BottomNavigationBarItem(
-                    icon: BlocBuilder<CartCubit, CartState>(
-                      builder: (context, state) {
-                        final count = context.read<CartCubit>().itemCount;
-                        return Badge(
-                          isLabelVisible: count > 0,
-                          label: Text('$count'),
-                          child: const Icon(Icons.shopping_cart),
-                        );
-                      },
+            bottomNavigationBar: SafeArea(
+              child: BottomAppBar(
+                shape: const CircularNotchedRectangle(),
+                notchMargin: 8.0,
+                clipBehavior: Clip.antiAlias,
+                padding: EdgeInsets.zero,
+                child: BottomNavigationBar(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  type: BottomNavigationBarType.fixed,
+                  currentIndex: currentIndex,
+                  onTap: (index) {
+                    context.read<NavigationCubit>().updateIndex(index);
+                  },
+                  selectedItemColor: AppColors.primary,
+                  unselectedItemColor: Colors.grey,
+                  showUnselectedLabels: false,
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.home),
+                      label: AppLocalizations.of(context)!.home,
                     ),
-                    label: AppLocalizations.of(context)!.cart,
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    label: AppLocalizations.of(context)!.profile,
-                  ),
-                ],
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.search),
+                      label: AppLocalizations.of(context)!.search,
+                    ),
+                    BottomNavigationBarItem(
+                      icon: BlocBuilder<CartCubit, CartState>(
+                        builder: (context, state) {
+                          final count = context.read<CartCubit>().itemCount;
+                          return Badge(
+                            isLabelVisible: count > 0,
+                            label: Text('$count'),
+                            child: const Icon(Icons.shopping_cart),
+                          );
+                        },
+                      ),
+                      label: AppLocalizations.of(context)!.cart,
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.person),
+                      label: AppLocalizations.of(context)!.profile,
+                    ),
+                  ],
+                ),
               ),
             ),
           );

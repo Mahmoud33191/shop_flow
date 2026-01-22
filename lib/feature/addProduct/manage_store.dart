@@ -5,6 +5,7 @@ import 'package:shop_flow/feature/addProduct/peresntation/srcreens/widgets/produ
 import 'package:shop_flow/feature/addProduct/peresntation/srcreens/widgets/search_widget.dart';
 import 'package:shop_flow/feature/home/data/dataSource/product_data_source.dart';
 import 'package:shop_flow/feature/home/data/models/product_model.dart';
+import 'package:shop_flow/l10n/app_localizations.dart';
 // import 'package:shop_flow/feature/addProduct/peresntation/srcreens/widgets/taps_widget.dart';
 // import 'package:shop_flow/feature/addProduct/peresntation/srcreens/widgets/bottum_navigate.dart';
 
@@ -57,15 +58,23 @@ class _ManageStoreState extends State<ManageStore> {
       await _dataSource.deleteProduct(product.id);
 
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('${product.name} deleted')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!.productDeleted(product.name),
+            ),
+          ),
+        );
         _loadProducts(); // Refresh list
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to delete: ${e.toString()}')),
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context)!.failedDelete}: ${e.toString()}',
+            ),
+          ),
         );
       }
     }
@@ -75,19 +84,24 @@ class _ManageStoreState extends State<ManageStore> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Product?'),
-        content: Text('Are you sure you want to delete "${product.name}"?'),
+        title: Text(AppLocalizations.of(context)!.deleteProduct),
+        content: Text(
+          AppLocalizations.of(context)!.deleteProductConfirmation(product.name),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
               _deleteProduct(product);
             },
-            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+            child: Text(
+              AppLocalizations.of(context)!.delete,
+              style: const TextStyle(color: Colors.red),
+            ),
           ),
         ],
       ),
@@ -99,9 +113,9 @@ class _ManageStoreState extends State<ManageStore> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        title: const Text(
-          'Manage Store',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          AppLocalizations.of(context)!.manageStore,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -114,9 +128,14 @@ class _ManageStoreState extends State<ManageStore> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'My Products',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  Text(
+                    AppLocalizations.of(
+                      context,
+                    )!.allProducts, // Or add "My Products" to arb
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -144,9 +163,17 @@ class _ManageStoreState extends State<ManageStore> {
               child: _isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : _error != null
-                  ? Center(child: Text('Error: $_error'))
+                  ? Center(
+                      child: Text(
+                        AppLocalizations.of(context)!.errorPrefix(_error!),
+                      ),
+                    )
                   : _products.isEmpty
-                  ? const Center(child: Text('No products found'))
+                  ? Center(
+                      child: Text(
+                        AppLocalizations.of(context)!.noProductsFound,
+                      ),
+                    )
                   : ListView.builder(
                       itemCount: _products.length,
                       itemBuilder: (context, index) {

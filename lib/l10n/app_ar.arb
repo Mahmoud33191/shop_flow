@@ -55,5 +55,88 @@
     "items": "عنصر",
     "noProductsFound": "لا توجد منتجات",
     "showAllProducts": "عرض كل المنتجات",
-    "tryAgain": "حاول مرة أخرى"
+    "tryAgain": "حاول مرة أخرى",
+    "saveChanges": "حفظ التغييرات",
+    "updateProfileSuccess": "تم تحديث الملف الشخصي بنجاح",
+    "reviewSubmitted": "تم إرسال المراجعة بنجاح",
+    "writeReview": "كتابة مراجعة",
+    "shareThoughts": "شاركنا رأيك...",
+    "submit": "إرسال",
+    "seeAll": "عرض الكل",
+    "noReviewsYet": "لا توجد مراجعات بعد",
+    "beFirstReview": "كن أول من يقيم هذا المنتج",
+    "addedToCart": "تم إضافة {productName} إلى السلة",
+    "@addedToCart": {
+        "placeholders": {
+            "productName": {
+                "type": "String"
+            }
+        }
+    },
+    "failedAddToCart": "فشل الإضافة إلى السلة",
+    "failedSubmitReview": "فشل إرسال المراجعة",
+    "adding": "جارٍ الإضافة...",
+    "close": "إغلاق",
+    "logoutConfirmation": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+    "deleteProduct": "حذف المنتج؟",
+    "deleteProductConfirmation": "هل أنت متأكد أنك تريد حذف \"{productName}\"؟",
+    "@deleteProductConfirmation": {
+        "placeholders": {
+            "productName": {
+                "type": "String"
+            }
+        }
+    },
+    "productDeleted": "تم حذف {productName}",
+    "@productDeleted": {
+        "placeholders": {
+            "productName": {
+                "type": "String"
+            }
+        }
+    },
+    "failedDelete": "فشل الحذف",
+    "addNewProduct": "إضافة منتج جديد",
+    "productName": "اسم المنتج",
+    "arabicName": "الاسم بالعربية",
+    "productDescription": "وصف المنتج",
+    "arabicDescription": "الوصف بالعربية",
+    "price": "السعر",
+    "stock": "المخزون",
+    "imageUrl": "رابط الصورة",
+    "selectCategory": "اختر القسم",
+    "selectCategoryPrompt": "اختر القسم:",
+    "pleaseSelectCategory": "يرجى اختيار القسم",
+    "productAddedSuccess": "تم إضافة المنتج بنجاح",
+    "failedAddProduct": "فشل إضافة المنتج",
+    "verifyOtp": "التحقق من الرمز",
+    "checkEmail": "تحقق من بريدك الإلكتروني",
+    "otpSentTo": "لقد أرسلنا رمز التحقق إلى",
+    "verify": "تحقق",
+    "didNotReceiveCode": "لم يصلك الرمز؟",
+    "resend": "إعادة الإرسال",
+    "createNewPassword": "إنشاء كلمة مرور جديدة",
+    "resetPassword": "إعادة تعيين كلمة المرور",
+    "resetPasswordInstructions": "يجب أن تكون كلمة المرور الجديدة مختلفة عن كلمات المرور المستخدمة سابقاً.",
+    "newPassword": "كلمة المرور الجديدة",
+    "enterNewPassword": "أدخل كلمة المرور الجديدة",
+    "confirmNewPassword": "تأكيد كلمة المرور الجديدة",
+    "passwordResetSuccess": "تم إعادة تعيين كلمة المرور بنجاح",
+    "verificationSuccessful": "تم التحقق بنجاح",
+    "currentPassword": "كلمة المرور الحالية",
+    "enterCurrentPassword": "أدخل كلمة المرور الحالية",
+    "passwordChangedSuccess": "تم تغيير كلمة المرور بنجاح",
+    "passwordRequirements": "متطلبات كلمة المرور:",
+    "reqAtLeast8Chars": "8 أحرف على الأقل",
+    "reqUppercase": "حرف كبير واحد على الأقل",
+    "reqNumber": "رقم واحد على الأقل",
+    "reqSpecialChar": "رمز خاص واحد على الأقل",
+    "errorPrefix": "خطأ: {message}",
+    "@errorPrefix": {
+        "placeholders": {
+            "message": {
+                "type": "String"
+            }
+        }
+    }
 }

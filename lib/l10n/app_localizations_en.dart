@@ -182,4 +182,178 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tryAgain => 'Try Again';
+
+  @override
+  String get saveChanges => 'Save Changes';
+
+  @override
+  String get updateProfileSuccess => 'Profile updated successfully';
+
+  @override
+  String get reviewSubmitted => 'Review submitted successfully';
+
+  @override
+  String get writeReview => 'Write a Review';
+
+  @override
+  String get shareThoughts => 'Share your thoughts...';
+
+  @override
+  String get submit => 'Submit';
+
+  @override
+  String get seeAll => 'See All';
+
+  @override
+  String get noReviewsYet => 'No reviews yet';
+
+  @override
+  String get beFirstReview => 'Be the first to review this product';
+
+  @override
+  String addedToCart(String productName) {
+    return '$productName added to cart';
+  }
+
+  @override
+  String get failedAddToCart => 'Failed to add to cart';
+
+  @override
+  String get failedSubmitReview => 'Failed to submit review';
+
+  @override
+  String get adding => 'Adding...';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get logoutConfirmation => 'Are you sure you want to logout?';
+
+  @override
+  String get deleteProduct => 'Delete Product?';
+
+  @override
+  String deleteProductConfirmation(String productName) {
+    return 'Are you sure you want to delete \"$productName\"?';
+  }
+
+  @override
+  String productDeleted(String productName) {
+    return '$productName deleted';
+  }
+
+  @override
+  String get failedDelete => 'Failed to delete';
+
+  @override
+  String get addNewProduct => 'Add New Product';
+
+  @override
+  String get productName => 'Product Name';
+
+  @override
+  String get arabicName => 'Arabic Name';
+
+  @override
+  String get productDescription => 'Product Description';
+
+  @override
+  String get arabicDescription => 'Arabic Description';
+
+  @override
+  String get price => 'Price';
+
+  @override
+  String get stock => 'Stock';
+
+  @override
+  String get imageUrl => 'Image URL';
+
+  @override
+  String get selectCategory => 'Select Category';
+
+  @override
+  String get selectCategoryPrompt => 'Select Category:';
+
+  @override
+  String get pleaseSelectCategory => 'Please select a category';
+
+  @override
+  String get productAddedSuccess => 'Product added successfully';
+
+  @override
+  String get failedAddProduct => 'Failed to add product';
+
+  @override
+  String get verifyOtp => 'Verify OTP';
+
+  @override
+  String get checkEmail => 'Check your email';
+
+  @override
+  String get otpSentTo => 'We sent a verification code to';
+
+  @override
+  String get verify => 'Verify';
+
+  @override
+  String get didNotReceiveCode => 'Didn\'t receive the code?';
+
+  @override
+  String get resend => 'Resend';
+
+  @override
+  String get createNewPassword => 'Create New Password';
+
+  @override
+  String get resetPassword => 'Reset Password';
+
+  @override
+  String get resetPasswordInstructions =>
+      'Your new password must be different from previously used passwords.';
+
+  @override
+  String get newPassword => 'New Password';
+
+  @override
+  String get enterNewPassword => 'Enter new password';
+
+  @override
+  String get confirmNewPassword => 'Confirm new password';
+
+  @override
+  String get passwordResetSuccess => 'Password reset successfully';
+
+  @override
+  String get verificationSuccessful => 'Verification successful';
+
+  @override
+  String get currentPassword => 'Current Password';
+
+  @override
+  String get enterCurrentPassword => 'Enter your current password';
+
+  @override
+  String get passwordChangedSuccess => 'Password changed successfully';
+
+  @override
+  String get passwordRequirements => 'Password Requirements:';
+
+  @override
+  String get reqAtLeast8Chars => 'At least 8 characters';
+
+  @override
+  String get reqUppercase => 'At least one uppercase letter';
+
+  @override
+  String get reqNumber => 'At least one number';
+
+  @override
+  String get reqSpecialChar => 'At least one special character';
+
+  @override
+  String errorPrefix(String message) {
+    return 'Error: $message';
+  }
 }

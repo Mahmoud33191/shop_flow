@@ -57,5 +57,88 @@
     "items": "items",
     "noProductsFound": "No products found",
     "showAllProducts": "Show all products",
-    "tryAgain": "Try Again"
+    "tryAgain": "Try Again",
+    "saveChanges": "Save Changes",
+    "updateProfileSuccess": "Profile updated successfully",
+    "reviewSubmitted": "Review submitted successfully",
+    "writeReview": "Write a Review",
+    "shareThoughts": "Share your thoughts...",
+    "submit": "Submit",
+    "seeAll": "See All",
+    "noReviewsYet": "No reviews yet",
+    "beFirstReview": "Be the first to review this product",
+    "addedToCart": "{productName} added to cart",
+    "@addedToCart": {
+        "placeholders": {
+            "productName": {
+                "type": "String"
+            }
+        }
+    },
+    "failedAddToCart": "Failed to add to cart",
+    "failedSubmitReview": "Failed to submit review",
+    "adding": "Adding...",
+    "close": "Close",
+    "logoutConfirmation": "Are you sure you want to logout?",
+    "deleteProduct": "Delete Product?",
+    "deleteProductConfirmation": "Are you sure you want to delete \"{productName}\"?",
+    "@deleteProductConfirmation": {
+        "placeholders": {
+            "productName": {
+                "type": "String"
+            }
+        }
+    },
+    "productDeleted": "{productName} deleted",
+    "@productDeleted": {
+        "placeholders": {
+            "productName": {
+                "type": "String"
+            }
+        }
+    },
+    "failedDelete": "Failed to delete",
+    "addNewProduct": "Add New Product",
+    "productName": "Product Name",
+    "arabicName": "Arabic Name",
+    "productDescription": "Product Description",
+    "arabicDescription": "Arabic Description",
+    "price": "Price",
+    "stock": "Stock",
+    "imageUrl": "Image URL",
+    "selectCategory": "Select Category",
+    "selectCategoryPrompt": "Select Category:",
+    "pleaseSelectCategory": "Please select a category",
+    "productAddedSuccess": "Product added successfully",
+    "failedAddProduct": "Failed to add product",
+    "verifyOtp": "Verify OTP",
+    "checkEmail": "Check your email",
+    "otpSentTo": "We sent a verification code to",
+    "verify": "Verify",
+    "didNotReceiveCode": "Didn't receive the code?",
+    "resend": "Resend",
+    "createNewPassword": "Create New Password",
+    "resetPassword": "Reset Password",
+    "resetPasswordInstructions": "Your new password must be different from previously used passwords.",
+    "newPassword": "New Password",
+    "enterNewPassword": "Enter new password",
+    "confirmNewPassword": "Confirm new password",
+    "passwordResetSuccess": "Password reset successfully",
+    "verificationSuccessful": "Verification successful",
+    "currentPassword": "Current Password",
+    "enterCurrentPassword": "Enter your current password",
+    "passwordChangedSuccess": "Password changed successfully",
+    "passwordRequirements": "Password Requirements:",
+    "reqAtLeast8Chars": "At least 8 characters",
+    "reqUppercase": "At least one uppercase letter",
+    "reqNumber": "At least one number",
+    "reqSpecialChar": "At least one special character",
+    "errorPrefix": "Error: {message}",
+    "@errorPrefix": {
+        "placeholders": {
+            "message": {
+                "type": "String"
+            }
+        }
+    }
 }

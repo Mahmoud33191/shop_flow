@@ -7,6 +7,7 @@ import 'package:shop_flow/feature/cart/presentation/cubit/cart_cubit.dart';
 import 'package:shop_flow/feature/home/data/dataSource/product_data_source.dart';
 import 'package:shop_flow/feature/home/data/models/product_model.dart';
 import 'package:shop_flow/feature/home/data/models/review_model.dart';
+import 'package:shop_flow/l10n/app_localizations.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final ProductModel product;
@@ -59,7 +60,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       );
       if (mounted) {
         scaffoldMessenger.showSnackBar(
-          const SnackBar(content: Text('Review submitted successfully')),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.reviewSubmitted),
+          ),
         );
       }
       _loadReviews(); // Refresh list
@@ -68,7 +71,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         scaffoldMessenger.showSnackBar(
           SnackBar(
             content: Text(
-              'Failed to submit review: ${e.toString().replaceAll("Exception:", "").trim()}',
+              '${AppLocalizations.of(context)!.failedSubmitReview}: ${e.toString().replaceAll("Exception:", "").trim()}',
             ),
             backgroundColor: AppColors.error,
           ),
@@ -84,7 +87,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Write a Review'),
+        title: Text(AppLocalizations.of(context)!.writeReview),
         content: StatefulBuilder(
           builder: (context, setState) => Column(
             mainAxisSize: MainAxisSize.min,
@@ -105,10 +108,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               const SizedBox(height: 16),
               TextField(
                 controller: commentController,
-                decoration: const InputDecoration(
-                  hintText: 'Share your thoughts...',
-                  border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.all(12),
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)!.shareThoughts,
+                  border: const OutlineInputBorder(),
+                  contentPadding: const EdgeInsets.all(12),
                 ),
                 maxLines: 3,
               ),
@@ -118,7 +121,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -131,7 +134,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Submit'),
+            child: Text(AppLocalizations.of(context)!.submit),
           ),
         ],
       ),
@@ -149,21 +152,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     try {
       // Add to local cart via CartCubit
       // Note: If CartCubit is available in the widget tree
-      try {
-        context.read<CartCubit>().addToCart(
-          productId: widget.product.id,
-          quantity: _quantity,
-          productName: widget.product.name,
-          price: widget.product.price,
-          imageUrl: widget.product.pictureUrl,
-        );
-      } catch (e) {
-        // CartCubit might not be available, try API directly
-        await _dataSource.addToCart(
-          productId: widget.product.id,
-          quantity: _quantity,
-        );
-      }
+      // Add to local cart via CartCubit
+      context.read<CartCubit>().addToCart(
+        productId: widget.product.id,
+        quantity: _quantity,
+        productName: widget.product.name,
+        price: widget.product.price,
+        imageUrl: widget.product.pictureUrl,
+      );
 
       if (mounted) {
         scaffoldMessenger.showSnackBar(
@@ -172,7 +168,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               children: [
                 const Icon(Icons.check_circle, color: Colors.white),
                 const SizedBox(width: 12),
-                Text('${widget.product.name} added to cart'),
+                Expanded(
+                  child: Text(
+                    AppLocalizations.of(
+                      context,
+                    )!.addedToCart(widget.product.name),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             ),
             backgroundColor: AppColors.success,
@@ -187,7 +190,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       if (mounted) {
         scaffoldMessenger.showSnackBar(
           SnackBar(
-            content: Text('Failed to add to cart: ${e.toString()}'),
+            content: Text(
+              '${AppLocalizations.of(context)!.failedAddToCart}: ${e.toString()}',
+            ),
             backgroundColor: AppColors.error,
           ),
         );
@@ -333,7 +338,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         }),
                         const SizedBox(width: 8),
                         Text(
-                          '(${_reviews.length} reviews)',
+                          '(${_reviews.length} ${AppLocalizations.of(context)!.reviews.toLowerCase()})',
                           style: TextStyle(
                             color: isDark
                                 ? AppColors.textSecondaryDark
@@ -390,7 +395,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
                   // Description
                   Text(
-                    'Description',
+                    AppLocalizations.of(context)!.description,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -412,7 +417,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Reviews',
+                        AppLocalizations.of(context)!.reviews,
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(fontWeight: FontWeight.bold),
                       ),
@@ -421,12 +426,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           IconButton(
                             icon: const Icon(Icons.add_comment_outlined),
                             onPressed: _showAddReviewDialog,
-                            tooltip: 'Write a review',
+                            tooltip: AppLocalizations.of(context)!.writeReview,
                           ),
                           if (_reviews.isNotEmpty)
                             TextButton(
                               onPressed: () {},
-                              child: const Text('See all'),
+                              child: Text(AppLocalizations.of(context)!.seeAll),
                             ),
                         ],
                       ),
@@ -467,7 +472,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             Icon(Icons.rate_review_outlined, size: 48, color: Colors.grey[400]),
             const SizedBox(height: 12),
             Text(
-              'No reviews yet',
+              AppLocalizations.of(context)!.noReviewsYet,
               style: TextStyle(
                 color: Colors.grey[600],
                 fontWeight: FontWeight.w500,
@@ -475,12 +480,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             ),
             const SizedBox(height: 4),
             Text(
-              'Be the first to review this product',
+              AppLocalizations.of(context)!.beFirstReview,
               style: TextStyle(color: Colors.grey[500], fontSize: 12),
             ),
             TextButton(
               onPressed: _showAddReviewDialog,
-              child: const Text('Write a Review'),
+              child: Text(AppLocalizations.of(context)!.writeReview),
             ),
           ],
         ),
@@ -598,7 +603,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Total Price',
+                    AppLocalizations.of(context)!.totalPrice,
                     style: TextStyle(
                       color: isDark
                           ? AppColors.textSecondaryDark
@@ -632,7 +637,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         ),
                       )
                     : const Icon(Icons.shopping_cart),
-                label: Text(_isAddingToCart ? 'Adding...' : 'Add to Cart'),
+                label: Text(
+                  _isAddingToCart
+                      ? AppLocalizations.of(context)!.adding
+                      : AppLocalizations.of(context)!.addToCart,
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,

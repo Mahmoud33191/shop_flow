@@ -5,6 +5,7 @@ import 'package:shop_flow/core/utils/custom_button.dart';
 import 'package:shop_flow/core/utils/custom_text_field.dart';
 import 'package:shop_flow/core/utils/validators.dart';
 import 'package:shop_flow/feature/auth/presentation/cubit/auth_cubit.dart';
+import 'package:shop_flow/l10n/app_localizations.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -55,7 +56,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   children: [
                     const Icon(Icons.check_circle, color: Colors.white),
                     const SizedBox(width: 12),
-                    Text(state.message ?? 'Password changed successfully'),
+                    Text(
+                      state.message ??
+                          AppLocalizations.of(context)!.passwordChangedSuccess,
+                    ),
                   ],
                 ),
                 backgroundColor: AppColors.success,
@@ -74,7 +78,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Change Password'),
+              title: Text(AppLocalizations.of(context)!.changePassword),
               centerTitle: true,
             ),
             body: SafeArea(
@@ -102,14 +106,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
                       // Title
                       Text(
-                        'Create New Password',
+                        AppLocalizations.of(context)!.createNewPassword,
                         style: Theme.of(context).textTheme.headlineSmall
                             ?.copyWith(fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Your new password must be different from your previous password',
+                        AppLocalizations.of(context)!.resetPasswordInstructions,
                         style: TextStyle(
                           color: isDark
                               ? AppColors.textSecondaryDark
@@ -122,8 +126,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       // Current Password
                       CustomTextField(
                         controller: _currentPasswordController,
-                        label: 'Current Password',
-                        hint: 'Enter your current password',
+                        label: AppLocalizations.of(context)!.currentPassword,
+                        hint: AppLocalizations.of(
+                          context,
+                        )!.enterCurrentPassword,
                         obscureText: _obscureCurrentPassword,
                         prefixIcon: Icons.lock_outline,
                         suffixIcon: IconButton(
@@ -141,7 +147,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         ),
                         validator: (value) => Validators.validateRequired(
                           value,
-                          'Current password',
+                          AppLocalizations.of(context)!.currentPassword,
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -149,8 +155,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       // New Password
                       CustomTextField(
                         controller: _newPasswordController,
-                        label: 'New Password',
-                        hint: 'Enter your new password',
+                        label: AppLocalizations.of(context)!.newPassword,
+                        hint: AppLocalizations.of(context)!.enterNewPassword,
                         obscureText: _obscureNewPassword,
                         prefixIcon: Icons.lock_outline,
                         suffixIcon: IconButton(
@@ -172,8 +178,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       // Confirm Password
                       CustomTextField(
                         controller: _confirmPasswordController,
-                        label: 'Confirm Password',
-                        hint: 'Confirm your new password',
+                        label: AppLocalizations.of(context)!.confirmPassword,
+                        hint: AppLocalizations.of(context)!.confirmNewPassword,
                         obscureText: _obscureConfirmPassword,
                         prefixIcon: Icons.lock_outline,
                         suffixIcon: IconButton(
@@ -210,7 +216,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Password Requirements:',
+                              AppLocalizations.of(
+                                context,
+                              )!.passwordRequirements,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: isDark
@@ -219,10 +227,22 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            _buildRequirement('At least 8 characters'),
-                            _buildRequirement('At least one uppercase letter'),
-                            _buildRequirement('At least one number'),
-                            _buildRequirement('At least one special character'),
+                            _buildRequirement(
+                              context,
+                              AppLocalizations.of(context)!.reqAtLeast8Chars,
+                            ),
+                            _buildRequirement(
+                              context,
+                              AppLocalizations.of(context)!.reqUppercase,
+                            ),
+                            _buildRequirement(
+                              context,
+                              AppLocalizations.of(context)!.reqNumber,
+                            ),
+                            _buildRequirement(
+                              context,
+                              AppLocalizations.of(context)!.reqSpecialChar,
+                            ),
                           ],
                         ),
                       ),
@@ -230,7 +250,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
                       // Submit Button
                       CustomButton(
-                        text: 'Change Password',
+                        text: AppLocalizations.of(context)!.changePassword,
                         onPressed: () => _changePassword(context),
                         isLoading: state is AuthLoading,
                       ),
@@ -245,7 +265,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     );
   }
 
-  Widget _buildRequirement(String text) {
+  Widget _buildRequirement(BuildContext context, String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(

@@ -6,6 +6,7 @@ import 'package:shop_flow/core/utils/custom_text_field.dart';
 import 'package:shop_flow/core/utils/validators.dart';
 import 'package:shop_flow/feature/auth/presentation/cubit/auth_cubit.dart';
 import 'package:shop_flow/feature/auth/presentation/screens/login_screen.dart';
+import 'package:shop_flow/l10n/app_localizations.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   final String email;
@@ -56,7 +57,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           if (state is AuthSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.message ?? 'Password reset successfully'),
+                content: Text(
+                  state.message ??
+                      AppLocalizations.of(context)!.passwordResetSuccess,
+                ),
                 backgroundColor: AppColors.success,
               ),
             );
@@ -77,7 +81,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Create New Password'),
+              title: Text(AppLocalizations.of(context)!.createNewPassword),
               centerTitle: true,
             ),
             body: Padding(
@@ -95,14 +99,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     ),
                     const SizedBox(height: 24),
                     Text(
-                      'Create New Password',
+                      AppLocalizations.of(context)!.createNewPassword,
                       style: Theme.of(context).textTheme.headlineSmall
                           ?.copyWith(fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Your new password must be different from previously used passwords.',
+                      AppLocalizations.of(context)!.resetPasswordInstructions,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: isDark
                             ? AppColors.textSecondaryDark
@@ -113,8 +117,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     const SizedBox(height: 40),
                     CustomTextField(
                       controller: _passwordController,
-                      label: 'New Password',
-                      hint: 'Enter new password',
+                      label: AppLocalizations.of(context)!.newPassword,
+                      hint: AppLocalizations.of(context)!.enterNewPassword,
                       obscureText: _obscurePassword,
                       prefixIcon: Icons.lock_outline,
                       suffixIcon: IconButton(
@@ -134,8 +138,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     const SizedBox(height: 16),
                     CustomTextField(
                       controller: _confirmPasswordController,
-                      label: 'Confirm Password',
-                      hint: 'Confirm new password',
+                      label: AppLocalizations.of(context)!.confirmPassword,
+                      hint: AppLocalizations.of(context)!.confirmNewPassword,
                       obscureText: _obscureConfirmPassword,
                       prefixIcon: Icons.lock_outline,
                       suffixIcon: IconButton(
@@ -157,7 +161,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     ),
                     const SizedBox(height: 32),
                     CustomButton(
-                      text: 'Reset Password',
+                      text: AppLocalizations.of(context)!.resetPassword,
                       onPressed: () => _resetPassword(context),
                       isLoading: state is AuthLoading,
                     ),
